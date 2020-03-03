@@ -1,8 +1,8 @@
-function [coeff,score,latent] = pca_analyza(M, pocty);
+function [coeff,score,latent,mu] = pca_analyza(M, pocty);
 %{
 Funkce pro výpoèet hlavních komponent.
 Vstupem jsou data, a poèty samplù pro jednotlivé bubny (pro barevné rozlièení)
-Výstupem jesou koueficienty, skóre a vlastní èísla.
+Výstupem jesou koueficienty, skóre, vlastní èísla, odhadované støedy.
 Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 %}
 %% PCA 
@@ -52,32 +52,32 @@ Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 % xlabel('PC1');
 % hold off;
 
-figure                                                                     % objekty 3d
-sc1 = 1:pocty(1);                                                          % rozdìlení poètù samplù pro jednotlivé bubny(zatím pro 3)
-sc2 = pocty(1): pocty(1)+pocty(2);
-sc3 = pocty(1)+pocty(2):pocty(1)+pocty(2)+pocty(3);
-scatter(score(sc1,1),score(sc1,2),'.r');
-hold on;
-box;
-scatter(score(sc2,1),score(sc2,2),'.g');
-scatter(score(sc3,1),score(sc3,2),'.b');
-grid on;
-legend ('malý buben', 'velký buben', 'hi-hat');
-ylabel('PC2');
-xlabel('PC1');
-%zlabel('PC3');
-hold off;
-
-figure                                                                     % biplot
-vbls = {'25', '31', '39', '50', '62', '79', '100', '125', '158', '200', ...
-    '251', '317', '400', '503', '634', '800', '1000', '1269', '1600', ...
-    '2015', '2539', '3200', '4000', '5100', '6400', '8060', '10159', ...
-    '12800', '16127'};
-biplot(coeff(:,1:3),'Scores',score(:,1:3),'VarLabels',vbls);
-ylabel('PC2');
-xlabel('PC1');
-zlabel('PC3');
-box
-grid on;
+% figure                                                                     % objekty 3d
+% sc1 = 1:pocty(1);                                                          % rozdìlení poètù samplù pro jednotlivé bubny(zatím pro 3)
+% sc2 = pocty(1): pocty(1)+pocty(2);
+% sc3 = pocty(1)+pocty(2):pocty(1)+pocty(2)+pocty(3);
+% scatter3(score(sc1,1),score(sc1,2),score(sc1,3),'.r');
+% hold on;
+% box;
+% scatter3(score(sc2,1),score(sc2,2),score(sc2,3),'.g');
+% scatter3(score(sc3,1),score(sc3,2),score(sc3,3),'.b');
+% grid on;
+% legend ('malý buben', 'velký buben', 'hi-hat');
+% ylabel('PC2');
+% xlabel('PC1');
+% zlabel('PC3');
+% hold off;
+% 
+% figure                                                                     % biplot
+% vbls = {'25', '31', '39', '50', '62', '79', '100', '125', '158', '200', ...
+%     '251', '317', '400', '503', '634', '800', '1000', '1269', '1600', ...
+%     '2015', '2539', '3200', '4000', '5100', '6400', '8060', '10159', ...
+%     '12800', '16127'};
+% biplot(coeff(:,1:3),'Scores',score(:,1:3),'VarLabels',vbls);
+% ylabel('PC2');
+% xlabel('PC1');
+% zlabel('PC3');
+% box
+% grid on;
     
 end

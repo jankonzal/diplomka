@@ -56,32 +56,18 @@ end
 
 %% PCA
 fprintf('Analýza hlavních komponent...\n');
-[coeff,score,latent] = pca_analyza(trenovaci.E',trenovaci.pocty);          % volání PCA
+[coeff,score,latent,mu] = pca_analyza(trenovaci.E',trenovaci.pocty);          % volání PCA
 
 
-%% clustering
 
-% [SVMModel]=klasifikace(score);
-% fprintf('Hotovo\n');
-% 
-% %% pokus klasifikace
-% for i=1:427
-%  test = score(i,:);
-%  [SVMlabel,SVMscore] = predict(SVMModel,test);
-%  label = string(SVMlabel);
-%  if label == 'sn'
-%      svm_test(i)=1;
-%  end
-%  if label == 'kick'
-%      svm_test(i)=2;
-%  end 
-%  if label == 'hi-hat'
-%      svm_test(i)=3;
-%  end
-% end
-% figure;
-% gscatter(score(:,1),score(:,2),svm_test);
-% legend('1. tøída','2. tøída','3. tøída');
-% ylabel('PC2');
-% xlabel('PC1');
-% grid on;
+%% vytvoøení klasifikaèního a PCA modelu
+
+[SVMModel]=klasifikace(score);
+PCAModel = struct('PCAmu', mu, 'PCAcoeff', coeff);
+
+fprintf('Ukládání modelù\n');
+
+save SVMModel SVMModel
+save PCAModel PCAModel
+
+fprintf('Hotovo\n');
