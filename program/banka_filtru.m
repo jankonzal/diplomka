@@ -1,4 +1,4 @@
-function [filtrovane_samply,stredni_f] = banka_filtru(sample, Fs)
+function [filtrovane_samply,stredni_f] = banka_filtru(sample)
 %{
 Funkce banky filtrù pro rozdìlení na jednotlivá frekvenèní pásma.
 Vstupem je sampl a vzorkovací kmitoèet.
@@ -11,6 +11,7 @@ je možné odkomentovat daný úsek kódu.
 %}
 
 %% definice promennych
+Fs = 48000;
 fs = 25;                    % pocatecni stredni frekvence
 fs_v = fs;
 fh = fs * (2^(1/6));        % poèáteèní horní mezní kmitoèet

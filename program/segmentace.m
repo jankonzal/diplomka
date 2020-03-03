@@ -35,15 +35,15 @@ f = waitbar(0,'Poèet nalezených samplù: 1', 'Name', 'Segmentace samplù...');
 %% segmentace 
 [up,lo] = envelope(sample,1500,'peak');   % obálka signálu
 
-% figure
-% hold on;                                  % vykreslení obálky a mezí
-% plot(sample);
-% plot(up);
-% plot(prah_up);
-% ax = gca;
-% ax.YLim = [-0.2 0.2];
-% 
-% hold off;
+figure
+hold on;                                  % vykreslení obálky a mezí
+plot(sample);
+plot(up);
+plot(prah_up);
+ax = gca;
+ax.YLim = [-0.2 0.2];
+
+hold off;
 
 for i = 1: length(sample)                 % cyklus segmentace
     if up(i) > 0.025                      % prah obálky
