@@ -1,5 +1,5 @@
 %{
-Tento soubor je uèící se m-fiel. Naèítá trénovací data provádí jejich
+Tento soubor je uèící se m-file. Naèítá trénovací data provádí jejich
 filtraci, vypoèet energií v pásmech, analýzu hlavních komponet, a shlukovou
 analýzu.
 
