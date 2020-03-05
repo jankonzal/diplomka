@@ -21,10 +21,7 @@ clear all;
 close all;
 
 %% definice promìnných
-fs = 48000;
 load('trenovaci.mat');                                                     % naètení trénovací matice
-
-
 
 %% naètení samplù
 

@@ -1,4 +1,4 @@
-function [segment_ID,k] = segmentace(sample, fs)
+%function [segment_ID,k] = segmentace(sample, fs)
 %%cistka
 %   clc;
 %   clear all;
@@ -11,7 +11,7 @@ function [segment_ID,k] = segmentace(sample, fs)
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\kick_sn_hihat_long_mono.wav';
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\kick_sn_hihat_short_mono.wav';
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\sn\on\Snr-01 48.wav';
-% cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\08.wav';
+ cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\08.wav';
 if exist('cesta')
     [sample, fs] = audioread(cesta);
     info = audioinfo(cesta);
@@ -91,24 +91,24 @@ k=k-1;
 % figure;
 % hold on;                                  % vykreslení obálky a mezí
 % plot(sample);
-%  plot(up1);
-%  plot(prah_up);
-% ax = gca;
-% ax.YLim = [-0.2 0.2];
-% hold off;
-% figure;
-% hold on;                                  % vykreslení obálky a mezí
-% plot(y);
-% plot(up);
+% plot(up1);
 % plot(prah_up);
 % ax = gca;
 % ax.YLim = [-0.2 0.2];
-% title('filtrovaný');
-% for i = 1:k
-%     plot ([segment_ID(i,1) segment_ID(i,1)], [-0.1 0.1],'r');
-%     plot ([segment_ID(i,2) segment_ID(i,2)], [-0.1 0.1],'g');
-% end
 % hold off;
+figure;
+hold on;                                  % vykreslení obálky a mezí
+plot(y);
+plot(up);
+plot(prah_up);
+ax = gca;
+ax.YLim = [-0.2 0.2];
+title('filtrovaný');
+for i = 1:k
+    plot ([segment_ID(i,1 segment_ID(i,1], [-0.1 0.1],'g');
+    plot (segment_ID(i,2),[-0.1 0.1],'r');
 end
+hold off;
+%end
 
  
