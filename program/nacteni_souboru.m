@@ -11,7 +11,15 @@ path = ('D:\Disk Google\FEKT\Diplomka2\samply');                           % def
 path_sn = ('D:\Disk Google\FEKT\Diplomka2\samply\sn\on');
 path_hi = ('D:\Disk Google\FEKT\Diplomka2\samply\hi-hat\close');
 path_kick = ('D:\Disk Google\FEKT\Diplomka2\samply\kick');
-trenovaci_SMP = zeros (200000,500);                                        % definice matice samplù pro rychlejší výpoèet
+path_ftom = ('D:\Disk Google\FEKT\Diplomka2\samply\ftom');
+path_crash = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\crash');
+path_ride = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\ride');
+
+%path_trash = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\trash');
+%path_tom1 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom1');
+%path_tom2 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom2');
+
+trenovaci_SMP = zeros (1000000,500);                                        % definice matice samplù pro rychlejší výpoèet
 f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù SN');            % waitbar
 
 %% výbìr složek
@@ -27,11 +35,44 @@ if ~exist('path_kick')
 folder_sn = uigetdir(path,'Kick');                                         % naètení složky pro Kick
 end
 
+if ~exist('path_ftom')
+folder_ftom = uigetdir(path,'Floor tom');                                  % naètení složky pro Floor Tom
+end
+
+if ~exist('path_crash')
+folder_crash = uigetdir(path,'Crash');                                     % naètení složky pro Crash
+end
+
+if ~exist('path_ride')
+folder_ride = uigetdir(path,'Ride');                                       % naètení složky pro Ride
+end
+
+% if ~exist('path_trash')
+% folder_trash = uigetdir(path,'Trash');                                   % naètení složky pro Trash
+% end
+% 
+% if ~exist('path_tom1')
+% folder_tom1 = uigetdir(path,'Tom 1');                                    % naètení složky pro Tom 1
+% end
+% 
+% if ~exist('path_tom2')
+% folder_tom2 = uigetdir(path,'Tom 2');                                    % naètení složky pro Tom 2
+% end
+
+
 %% naètení názvù souborù ve složkách
 
 folder_sn = dir (path_sn);
 folder_kick = dir (path_kick);
 folder_hi = dir (path_hi);
+
+folder_ftom = dir (path_ftom);
+folder_crash = dir (path_crash);
+folder_ride = dir (path_ride);
+
+% folder_trash = dir (path_trash);
+% folder_tom1 = dir (path_tom1);
+% folder_tom2 = dir (path_tom2);
 
 %% naètení souborù
    
@@ -45,6 +86,7 @@ for i = 1:length(folder_sn)-2                                              % naè
     waitbar(i/length(folder_sn),f,sprintf('Naèítání samplù: %6s %12s',name));
 end
 delete(f);
+
 f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù KICK');
 for k = 1:length(folder_kick)-2                                            % naèítání samplù pro Kick
     name = char({folder_kick(k+2).name});                                  % procházení jmen souborù ve složce
@@ -56,6 +98,7 @@ for k = 1:length(folder_kick)-2                                            % naè
     waitbar(k/length(folder_kick),f,sprintf('Naèítání samplù: %6s %12s',name));
 end
 delete(f);
+
 f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù HI-HAT');
 for l = 1:length(folder_hi)-2                                              % naèítání samplù pro Hi-hat
     name = char({folder_hi(l+2).name});                                    % procházení jmen souborù ve složce
@@ -67,8 +110,45 @@ for l = 1:length(folder_hi)-2                                              % naè
     waitbar(l/length(folder_hi),f,sprintf('Naèítání samplù: %6s %12s',name));
 end
 delete(f);
-pocet_SMP = i+k+l;                                                         % vyslední poèet samplù
-pocty = [i k l];                                                           % poèty samplù pro jednotlivé bubny
+
+f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù FLOOR TOM');
+for m = 1:length(folder_ftom)-2                                            % naèítání samplù pro Floor Tom
+    name = char({folder_ftom(m+2).name});                                  % procházení jmen souborù ve složce
+    [sample, fs] = audioread(fullfile( path_ftom, name));                  % naètení samplu
+    sample = sample(:,1);                                                  % zmonìní samplu
+    for j = 1: length(sample)                                                       
+    trenovaci_SMP(j,i+k+l+m) = sample(j);                                  % uložení samplu do matice 
+    end
+    waitbar(m/length(folder_ftom),f,sprintf('Naèítání samplù: %6s %12s',name));
+end
+delete(f);
+
+f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù CRASH');
+for n = 1:length(folder_crash)-2                                           % naèítání samplù pro Crash
+    name = char({folder_crash(n+2).name});                                 % procházení jmen souborù ve složce
+    [sample, fs] = audioread(fullfile( path_crash, name));                 % naètení samplu
+    sample = sample(:,1);                                                  % zmonìní samplu
+    for j = 1: length(sample)                                                       
+    trenovaci_SMP(j,i+k+l+m+n) = sample(j);                                % uložení samplu do matice 
+    end
+    waitbar(n/length(folder_crash),f,sprintf('Naèítání samplù: %6s %12s',name));
+end
+delete(f);
+
+f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù RIDE');
+for o = 1:length(folder_ride)-2                                            % naèítání samplù pro Ride
+    name = char({folder_ride(o+2).name});                                  % procházení jmen souborù ve složce
+    [sample, fs] = audioread(fullfile( path_ride, name));                 % naètení samplu
+    sample = sample(:,1);                                                  % zmonìní samplu
+    for j = 1: length(sample)                                                       
+    trenovaci_SMP(j,i+k+l+m+n+o) = sample(j);                              % uložení samplu do matice 
+    end
+    waitbar(o/length(folder_ride),f,sprintf('Naèítání samplù: %6s %12s',name));
+end
+delete(f);
+
+pocet_SMP = i+k+l+m+n+o;                                                   % vyslední poèet samplù
+pocty = [i k l m n o];                                                     % poèty samplù pro jednotlivé bubny
 trenovaci = struct ('SMP',trenovaci_SMP, 'pocet', pocet_SMP,  'pocty', ... % vytvoøení trenovací struktury
     pocty, 'stredni_f',  [], 'E', []);
 end

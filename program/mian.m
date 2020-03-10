@@ -6,7 +6,7 @@ close all;
 
 %% definice promìnných
 l=1;
-segmentovane_samply = zeros (200000,500); 
+segmentovane_samply = zeros (1000000,500); 
 
 %% automatické naètení souboru
 fprintf('Naèítání souborù...\n');
@@ -14,7 +14,7 @@ fprintf('Naèítání souborù...\n');
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\all_drums_short_mono.wav';
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\kick_sn_hihat_long_mono.wav';
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\kick_sn_hihat_short_mono.wav';
- cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\08.wav';
+% cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\downmix\08.wav';
 % cesta = 'D:\Disk Google\FEKT\Diplomka2\samply\sn\on\Snr-01 48.wav';
 if exist('cesta')
     [sample, fs] = audioread(cesta);

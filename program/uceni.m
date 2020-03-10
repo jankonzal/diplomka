@@ -37,7 +37,7 @@ if isempty(trenovaci.E)                                                    % pok
 fprintf('Výpoèet energe v pásmech\n');
 f = waitbar(0,'Výpoèet energe v pásmech', 'Name', 'Výpoèet energe v pásmech');
 for i = 1:trenovaci.pocet
-    [filtrovane_SMP,stredni_f] = banka_filtru(trenovaci.SMP(:,i), fs);     % volání banky filtrù
+    [filtrovane_SMP,stredni_f] = banka_filtru(trenovaci.SMP(:,i));     % volání banky filtrù
     if ~exist('SUM_E')
         SUM_E = zeros(length(stredni_f),trenovaci.pocet);
     end
