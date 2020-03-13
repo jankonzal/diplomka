@@ -1,4 +1,4 @@
-function [segment_ID,k] = segmentace(sample, fs)
+function [segmentID,k,a] = segmentace(sample, fs)
 %%cistka
 %   clc;
 %   clear all;
@@ -33,14 +33,26 @@ j = 1;                                                                     % ite
 k = 1;
 start = 1;
 stop = 0;
-segment_ID = 0;
-segmentovane_samply = zeros(200000,500);                                   % matice pro samply
+segmentID = 0;
+                                   % matice pro samply
 f = waitbar(0,'Poèet nalezených samplù: 1', 'Name', 'Segmentace samplù...');
 
-
+%% pøizpùsobení signálu
+[E] = energie(sample);
+if E < 2500
+    while E < 2500
+    [E] = energie(sample);
+    sample = sample*1.1;
+    end
+else
+    while E > 2500
+    [E] = energie(sample);
+    sample = sample*0.9;
+    end
+end
 %% filtr dilní propusti
-Wn = 4000/(fs/2); 
-[b,a] = butter(4,Wn,'high');
+Wn = 4500/(fs/2); 
+[b,a] = butter(15,Wn,'high');
 
 y = filter(b,a,sample);
 %% segmentace
@@ -70,7 +82,7 @@ for i = 1: length(sample)
     if up(i) > 0.025
         stop = 1;
         if start == 1
-            segment_ID(k,1) = i;
+            segmentID(k,1) = i;
             k = k+1;
             waitbar(i/length(sample),f,sprintf...
            ('Poèet nalezených samplù: %d',k));
@@ -79,15 +91,15 @@ for i = 1: length(sample)
     else
         start = 1;
         if stop == 1
-          segment_ID(k-1,2) = i;
+          segmentID(k-1,2) = i;
           stop = 0;
         end
     end
 end
-delete(f)
+delete(f);
 k=k-1;
 %% vykreslení
-%freqz(b,a);
+% freqz(b,a);
 % figure;
 % hold on;                                  % vykreslení obálky a mezí
 % plot(sample);
@@ -96,19 +108,19 @@ k=k-1;
 % ax = gca;
 % ax.YLim = [-0.2 0.2];
 % hold off;
-% figure;
-% hold on;                                  % vykreslení obálky a mezí
-% plot(y);
-% plot(up);
-% plot(prah_up);
-% ax = gca;
-% ax.YLim = [-0.2 0.2];
-% title('filtrovaný');
+figure;
+hold on;                                  % vykreslení obálky a mezí
+plot(y);
+plot(up);
+plot(prah_up);
+ax = gca;
+ax.YLim = [-0.2 0.2];
+title('filtrovaný');
 % for i = 1:k
-%     plot ([segment_ID(i,1) segment_ID(i,1)], [-0.1 0.1],'r');
-%     plot ([segment_ID(i,2) segment_ID(i,2)], [-0.1 0.1],'g');
+%     plot ([segmentID(i,1) segmentID(i,1)], [-0.1 0.1],'r');
+%     plot ([segmentID(i,2) segmentID(i,2)], [-0.1 0.1],'g');
 % end
-% hold off;
+hold off;
 end
 
  

@@ -9,15 +9,15 @@ end
 for i = 324:427
 Y(i,1)={'hi-hat'};
 end
-for i = 427:442 
-Y(i,1)={'ftom'};
-end
-for i = 442:479
-Y(i,1)={'crash'};
-end
-for i = 479:499
-Y(i,1)={'ride'};
-end
+% for i = 427:442 
+% Y(i,1)={'ftom'};
+% end
+% for i = 442:479
+% Y(i,1)={'crash'};
+% end
+% for i = 479:499
+% Y(i,1)={'ride'};
+% end
 
 %% SVM
 Mdl = fitcecoc(X,Y);

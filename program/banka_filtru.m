@@ -61,6 +61,6 @@ while fh < Fs/2
     end
 end
     for j = 1:length(filtrovane_samply(1,:))                               
-        stredni_f(j) = fs_v(j);                                            % pøedání støedních kmitoètù filtrù
+        stredni_f(j,1) = fs_v(j);                                            % pøedání støedních kmitoètù filtrù
     end
 end

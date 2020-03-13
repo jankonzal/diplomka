@@ -9,7 +9,7 @@ srovnané se spektrem pùvodního samplu.
 %}
 for i = 1:length(filtrovane_samply(1,:))
     sm = filtrovane_samply(:,i);                   
-    E(i) = sum(abs(sm).^2);                                                % výpoèet energie
+    E(i,1) = sum(abs(sm).^2);                                                % výpoèet energie
 end
 
 % figure;

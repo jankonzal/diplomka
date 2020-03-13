@@ -19,7 +19,7 @@ path_ride = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\ride');
 %path_tom1 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom1');
 %path_tom2 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom2');
 
-trenovaci_SMP = zeros (1000000,500);                                        % definice matice samplù pro rychlejší výpoèet
+SUM_E = [];                                        
 f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù SN');            % waitbar
 
 %% výbìr složek
@@ -76,79 +76,86 @@ folder_ride = dir (path_ride);
 
 %% naètení souborù
    
+% SNARE
 for i = 1:length(folder_sn)-2                                              % naèítání samplù pro Snare
     name = char({folder_sn(i+2).name});                                    % procházení jmen souborù ve složce
-    [sample, fs] = audioread(fullfile( path_sn, name));                    % naètení samplu
+    [sample] = audioread(fullfile( path_sn, name));                        % naètení samplu
     sample = sample(:,1);                                                  % zmonìní samplu
-    for j = 1: length(sample)                                                       
-    trenovaci_SMP(j,i) = sample(j);                                        % uložení samplu do matice
-    end
+    [filtrovane_SMP, stredni_f] = banka_filtru(sample);                    % filtrace samplu                              
+    [E] = energie(filtrovane_SMP);
+    SUM_E = [SUM_E E];
+    Snare = i;
     waitbar(i/length(folder_sn),f,sprintf('Naèítání samplù: %6s %12s',name));
 end
 delete(f);
-
-f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù KICK');
-for k = 1:length(folder_kick)-2                                            % naèítání samplù pro Kick
-    name = char({folder_kick(k+2).name});                                  % procházení jmen souborù ve složce
-    [sample, fs] = audioread(fullfile( path_kick, name));                  % naètení samplu
+ f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù KICK');
+% KICK
+for i = 1:length(folder_kick)-2                                            % naèítání samplù pro Kick
+    name = char({folder_kick(i+2).name});                                  % procházení jmen souborù ve složce
+    [sample] = audioread(fullfile( path_kick, name));                      % naètení samplu
     sample = sample(:,1);                                                  % zmonìní samplu
-    for j = 1: length(sample)                                                       
-    trenovaci_SMP(j,i+k) = sample(j);                                      % uložení samplu do matice         
-    end
-    waitbar(k/length(folder_kick),f,sprintf('Naèítání samplù: %6s %12s',name));
+    [filtrovane_SMP] = banka_filtru(sample);                               % filtrace samplu                              
+    [E] = energie(filtrovane_SMP);
+    SUM_E = [SUM_E E];
+    Kick = i;
+    waitbar(i/length(folder_kick),f,sprintf('Naèítání samplù: %6s %12s',name));
 end
 delete(f);
-
+% HI-HAT
 f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù HI-HAT');
-for l = 1:length(folder_hi)-2                                              % naèítání samplù pro Hi-hat
-    name = char({folder_hi(l+2).name});                                    % procházení jmen souborù ve složce
-    [sample, fs] = audioread(fullfile( path_hi, name));                    % naètení samplu
-    sample = sample(:,1);                                                  % zmonìní samplu
-    for j = 1: length(sample)                                                       
-    trenovaci_SMP(j,i+k+l) = sample(j);                                    % uložení samplu do matice 
-    end
-    waitbar(l/length(folder_hi),f,sprintf('Naèítání samplù: %6s %12s',name));
-end
-delete(f);
-
-f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù FLOOR TOM');
-for m = 1:length(folder_ftom)-2                                            % naèítání samplù pro Floor Tom
-    name = char({folder_ftom(m+2).name});                                  % procházení jmen souborù ve složce
-    [sample, fs] = audioread(fullfile( path_ftom, name));                  % naètení samplu
-    sample = sample(:,1);                                                  % zmonìní samplu
-    for j = 1: length(sample)                                                       
-    trenovaci_SMP(j,i+k+l+m) = sample(j);                                  % uložení samplu do matice 
-    end
-    waitbar(m/length(folder_ftom),f,sprintf('Naèítání samplù: %6s %12s',name));
-end
-delete(f);
-
-f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù CRASH');
-for n = 1:length(folder_crash)-2                                           % naèítání samplù pro Crash
-    name = char({folder_crash(n+2).name});                                 % procházení jmen souborù ve složce
-    [sample, fs] = audioread(fullfile( path_crash, name));                 % naètení samplu
-    sample = sample(:,1);                                                  % zmonìní samplu
-    for j = 1: length(sample)                                                       
-    trenovaci_SMP(j,i+k+l+m+n) = sample(j);                                % uložení samplu do matice 
-    end
-    waitbar(n/length(folder_crash),f,sprintf('Naèítání samplù: %6s %12s',name));
-end
-delete(f);
-
-f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù RIDE');
-for o = 1:length(folder_ride)-2                                            % naèítání samplù pro Ride
-    name = char({folder_ride(o+2).name});                                  % procházení jmen souborù ve složce
-    [sample, fs] = audioread(fullfile( path_ride, name));                 % naètení samplu
-    sample = sample(:,1);                                                  % zmonìní samplu
-    for j = 1: length(sample)                                                       
-    trenovaci_SMP(j,i+k+l+m+n+o) = sample(j);                              % uložení samplu do matice 
-    end
-    waitbar(o/length(folder_ride),f,sprintf('Naèítání samplù: %6s %12s',name));
-end
-delete(f);
-
-pocet_SMP = i+k+l+m+n+o;                                                   % vyslední poèet samplù
-pocty = [i k l m n o];                                                     % poèty samplù pro jednotlivé bubny
-trenovaci = struct ('SMP',trenovaci_SMP, 'pocet', pocet_SMP,  'pocty', ... % vytvoøení trenovací struktury
-    pocty, 'stredni_f',  [], 'E', []);
+ for i = 1:length(folder_hi)-2                                              % naèítání samplù pro Hi-hat
+     name = char({folder_hi(i+2).name});                                    % procházení jmen souborù ve složce
+     [sample] = audioread(fullfile( path_hi, name));                        % naètení samplu
+     sample = sample(:,1);                                                  % zmonìní samplu
+     [filtrovane_SMP] = banka_filtru(sample);                               % filtrace samplu                              
+     [E] = energie(filtrovane_SMP);
+     SUM_E = [SUM_E E];
+     HiHat = i;
+     waitbar(i/length(folder_hi),f,sprintf('Naèítání samplù: %6s %12s',name));
+ end
+ delete(f);
+ %FLOOR TOM
+%  f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù FLOOR TOM');
+% for i = 1:length(folder_ftom)-2                                            % naèítání samplù pro Floor Tom
+%     name = char({folder_ftom(i+2).name});                                  % procházení jmen souborù ve složce
+%     [sample] = audioread(fullfile( path_ftom, name));                      % naètení samplu
+%     sample = sample(:,1);                                                  % zmonìní samplu
+%     [filtrovane_SMP] = banka_filtru(sample);                               % filtrace samplu                              
+%     [E] = energie(filtrovane_SMP);
+%     SUM_E = [SUM_E E];
+%     FloorTom = i;
+%     waitbar(i/length(folder_ftom),f,sprintf('Naèítání samplù: %6s %12s',name));
+% end
+% delete(f);
+% % CRASH
+% f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù CRASH');
+% for i = 1:length(folder_crash)-2                                           % naèítání samplù pro Crash
+%     name = char({folder_crash(i+2).name});                                 % procházení jmen souborù ve složce
+%     [sample] = audioread(fullfile( path_crash, name));                      % naètení samplu
+%     sample = sample(:,1);                                                  % zmonìní samplu
+%     [filtrovane_SMP] = banka_filtru(sample);                               % filtrace samplu                              
+%     [E] = energie(filtrovane_SMP);
+%     SUM_E = [SUM_E E];
+%     Crash = i;
+%     waitbar(i/length(folder_crash),f,sprintf('Naèítání samplù: %6s %12s',name));
+% end
+% delete(f);
+% % RIDE
+% f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù RIDE');
+% for i = 1:length(folder_ride)-2                                            % naèítání samplù pro Ride
+%     name = char({folder_ride(i+2).name});                                  % procházení jmen souborù ve složce
+%     [sample] = audioread(fullfile( path_ride, name));                      % naètení samplu
+%     sample = sample(:,1);                                                  % zmonìní samplu
+%     [filtrovane_SMP] = banka_filtru(sample);                               % filtrace samplu                              
+%     [E] = energie(filtrovane_SMP);
+%     SUM_E = [SUM_E E];
+%     Ride = i;
+%     waitbar(i/length(folder_ride),f,sprintf('Naèítání samplù: %6s %12s',name));
+% end
+% delete(f);
+%% vytvoøení trénovací struktury
+info = table(Snare,Kick,HiHat);
+pocet_SMP = Snare + Kick + HiHat;
+trenovaci = struct ('E',SUM_E, 'pocet_SMP', pocet_SMP,  'info', ...        % vytvoøení trenovací struktury
+     info, 'stredni_f',  stredni_f);
 end

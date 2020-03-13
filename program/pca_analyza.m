@@ -1,4 +1,4 @@
-function [coeff,score,latent,mu] = pca_analyza(M, pocty);
+function [coeff,score,latent,mu] = pca_analyza(E, pocty);
 %{
 Funkce pro výpoèet hlavních komponent.
 Vstupem jsou data, a poèty samplù pro jednotlivé bubny (pro barevné rozlièení)
@@ -6,7 +6,7 @@ Výstupem jesou koueficienty, skóre, vlastní èísla, odhadované støedy.
 Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 %}
 %% PCA 
-[coeff,score,latent,tsquared,explained,mu] = pca(M,'NumComponents',7);
+[coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',7);
 
 %% vykreslení
 
@@ -53,7 +53,7 @@ Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 % hold off;
 
 figure                                                                     % objekty 3d
-sc1 = 1:221;                                                   % rozdìlení poètù samplù pro jednotlivé bubny(zatím pro 3)
+sc1 = 1:221;                                                               % rozdìlení poètù samplù pro jednotlivé bubny(zatím pro 3)
 sc2 = 222:323;
 sc3 = 324:427;
 sc4 = 427:442;
@@ -65,31 +65,15 @@ box;
 scatter3(score(sc2,1),score(sc2,2),score(sc2,3),'.g');
 scatter3(score(sc3,1),score(sc3,2),score(sc3,3),'.b');
 
-scatter3(score(sc4,1),score(sc4,2),score(sc4,3),'.y');
-scatter3(score(sc5,1),score(sc5,2),score(sc5,3),'.m');
-scatter3(score(sc6,1),score(sc6,2),score(sc6,3),'.c');
+
 grid on;
-legend ('malý buben', 'velký buben', 'hi-hat', 'ftom', 'crash', 'ride');
+legend ('malý buben', 'velký buben', 'hi-hat');
 ylabel('PC2');
 xlabel('PC1');
 zlabel('PC3');
 hold off;
-figure;
-scatter3(score(sc1,4),score(sc1,5),score(sc1,6),'.r');
-hold on;
-box;
-scatter3(score(sc2,4),score(sc2,5),score(sc2,6),'.g');
-scatter3(score(sc3,4),score(sc3,5),score(sc3,6),'.b');
 
-scatter3(score(sc4,4),score(sc4,5),score(sc4,6),'.y');
-scatter3(score(sc5,4),score(sc5,5),score(sc5,6),'.m');
-scatter3(score(sc6,4),score(sc6,5),score(sc6,6),'.c');
-grid on;
-legend ('malý buben', 'velký buben', 'hi-hat', 'ftom', 'crash', 'ride');
-ylabel('PC5');
-xlabel('PC4');
-zlabel('PC6');
-hold off;
+
 % 
 % figure                                                                     % biplot
 % vbls = {'25', '31', '39', '50', '62', '79', '100', '125', '158', '200', ...
