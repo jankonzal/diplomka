@@ -39,7 +39,7 @@ sample = sample(:,1);                                                      % zmo
 
 %% segmentace nahrávky
 fprintf('Segmentace samplù...\n');
-[segmentID,pocet_segmentu] = segmentace(sample,fs);                       % Segmentace na jednotlivé údery
+[segmentID,pocet_segmentu] = okno(sample,fs);                       % Segmentace na jednotlivé údery
 
 %% filtrace a výpoèet energií
 fprintf('Výpoèet energe...\n');
@@ -61,8 +61,40 @@ fprintf('Pøevedení nahrávky do prostoru PCA...\n');
 fprintf('Klasifikace tøíd...\n');
 [SVMlabel,SVMscore] = predict(SVMModel,pcaTranformed);
 
+%% seskupení segmentù
+SVMcharLabel=char(SVMlabel);
+new = 1;
+zapis = 0;
+k = 1;
+name = SVMcharLabel(1,:);
+for i=1:pocet_segmentu
+    if new == 1
+            NewName = SVMlabel(i);
+            start = segmentID(i,1);
+            new = 0;
+        end
+    if name == SVMcharLabel(i,:)
+        
+    else
+        stop = segmentID(i,2);
+        name = SVMcharLabel(i,:);
+        zapis = 1;
+    end
+    if zapis == 1
+        SegLab(k) = NewName;
+        SegID(k,1) = start;
+        SegID(k,2) = stop;
+        k = k+1;
+        zapis = 0;
+        new = 1;
+    end
+            
+end
+
+SegLab =SegLab';
 %% výsledky
-cellID = num2cell(segmentID);
-vysledek =[SVMlabel cellID];
+cellID = num2cell(SegID);
+
+vysledek =[SegLab cellID];
 
 uit=uitable(figure,'Data',vysledek);
