@@ -28,7 +28,7 @@ sample = sample(:,1);                                                       % zm
 %% definice promìnných
 segmentID = 1;
 k = 1;
-WinLen = 3200;
+WinLen = 4000;
 %% segmentace plovoucím oknem
 for i=1:WinLen:length(sample)
     segmentID (k,1) = i;
