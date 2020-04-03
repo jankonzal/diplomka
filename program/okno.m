@@ -28,11 +28,15 @@ sample = sample(:,1);                                                       % zm
 %% definice promìnných
 segmentID = 1;
 k = 1;
-WinLen = 4000;
+WinLen = 3500;
+overlap = 0.5;
 %% segmentace plovoucím oknem
 for i=1:WinLen:length(sample)
     segmentID (k,1) = i;
     segmentID (k,2) = i+WinLen;
+%     if segmentID (k,2) > length(sample)
+%         segmentID (k,2) = length(sample);
+%     end
     k=k+1;
 end
 
