@@ -7,13 +7,13 @@ function [trenovaci] = nacteni_souboru();
 % close all;
 
 %% definice promìnných
-path = ('D:\Disk Google\FEKT\Diplomka2\samply');                           % definice cest pro rychle najití složek (doèasné)
-path_sn = ('D:\Disk Google\FEKT\Diplomka2\samply\sn\on');
-path_hi = ('D:\Disk Google\FEKT\Diplomka2\samply\hi-hat\close');
-path_kick = ('D:\Disk Google\FEKT\Diplomka2\samply\kick');
-path_ftom = ('D:\Disk Google\FEKT\Diplomka2\samply\ftom');
-path_crash = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\crash');
-path_ride = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\ride');
+path = ('C:\Users\Honza\Documents\samply');                           % definice cest pro rychle najití složek (doèasné)
+path_sn = ('C:\Users\Honza\Documents\samply\sn\on');
+path_hi = ('C:\Users\Honza\Documents\samply\hi-hat\close');
+path_kick = ('C:\Users\Honza\Documents\samply\kick');
+path_ftom = ('C:\Users\Honza\Documents\samply\ftom');
+path_crash = ('C:\Users\Honza\Documents\samply\oh\crash');
+path_ride = ('C:\Users\Honza\Documents\samply\oh\ride');
 
 %path_trash = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\trash');
 %path_tom1 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom1');
