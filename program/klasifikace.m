@@ -1,13 +1,13 @@
 function [Mdl] = klasifikace(score);
 X = score;
 for i = 1:221
-Y(i,1)={'sn'};
+Y(i,1)=1;       %1 je SN 
 end
 for i = 222:323
-Y(i,1)={'kick'};
+Y(i,1)=2;       %2 je KICK
 end
 for i = 324:427
-Y(i,1)={'hi-hat'};
+Y(i,1)=3;       % je Hi-Hat
 end
 % for i = 427:442 
 % Y(i,1)={'ftom'};
