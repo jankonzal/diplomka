@@ -1,4 +1,4 @@
-function [WindowID,SegmentID,WinNum] = okno(sample, fs, WinLen, overlap)
+
 %{
     Tato funkce rozdìlí signál do èasovýc oken a hledá zaèátky a konce úderù.
     Vstupními parametry jsou zvukový signál, vzorkovací kmitoèet, velikost
@@ -8,38 +8,38 @@ function [WindowID,SegmentID,WinNum] = okno(sample, fs, WinLen, overlap)
     identifikátory zaèátkù, koncù úderù a poèet oken.
 %}
 
-% %cistka
-%   clc;
-%   clear all;
-%   close all;
-% 
-% 
-% %% naètení souboru
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
-%  cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
-% if exist('cesta')
-%     [sample, fs] = audioread(cesta);
-%     info = audioinfo(cesta);
-% end
-% if ~exist('sample') || isempty(sample)                                     % pokud neexistuje sammpl otevøe se dialog pro naèteni zvukoveho souboru 
-%                                             
-%     [filename, pathname] = uigetfile({'*.wav','Zvukové soubory wav';'*.*',...
-%         'Všechny soubory'},'Vyber zvukový soubor');
-%     [sample, fs] = audioread( fullfile( pathname, filename));
-%             info = audioinfo(fullfile( pathname, filename));
-%     
-% end
-% sample = sample(:,1);                                                       % zmonìní samplu
+%cistka
+  clc;
+  clear all;
+  close all;
+
+
+%% naètení souboru
+% cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
+if exist('cesta')
+    [sample, fs] = audioread(cesta);
+    info = audioinfo(cesta);
+end
+if ~exist('sample') || isempty(sample)                                     % pokud neexistuje sammpl otevøe se dialog pro naèteni zvukoveho souboru 
+                                            
+    [filename, pathname] = uigetfile({'*.wav','Zvukové soubory wav';'*.*',...
+        'Všechny soubory'},'Vyber zvukový soubor');
+    [sample, fs] = audioread( fullfile( pathname, filename));
+            info = audioinfo(fullfile( pathname, filename));
+    
+end
+sample = sample(:,1);                                                       % zmonìní samplu
 %% definice promìnných
 WindowID = 1;
 PriznakySum = [0 0];
 WinNum = 1;
-% overlap = 0.6;
-% WinLen=3500;
+overlap = 0.6;
+WinLen=3500;
 WinMinus = 1-overlap;
 %% normalizace hlasitosti
 
@@ -179,5 +179,4 @@ if buffer(i,2) == 0
    buffer (i,2) = SegmentCheck(i,1); 
 end
 clear SegmentID;
-SegmentID = buffer;
-end    
+SegmentID = buffer;  
