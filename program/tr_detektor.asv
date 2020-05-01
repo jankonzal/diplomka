@@ -31,7 +31,6 @@ k = 1;
 start = 0;
 stop = 0;
 segmentID = [0 0];
-ochrana = 0;
 %% Diferenèní filtrace
 
 for i = 1:length(okno)
@@ -62,7 +61,6 @@ for i = 1: length(okno)
                      segmentID(k,1) = i;
 
                  end
-                 ochrana = 40;
                 k = k+1;
                 start = 0;
             end
@@ -76,7 +74,6 @@ for i = 1: length(okno)
                      segmentID(k,2) = i;
 
                  end
-                 ochrana = 40;
                  k = k+1;
                  stop = 0;
             end

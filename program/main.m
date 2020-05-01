@@ -1,12 +1,3 @@
-%{
-Tento soubor je testovací m-file. Analyzuje naètené audio soubory a
-rozpoznává v nich údery.
-
-K rozpoznání je tøeba pøipojit vytrénované modely analýzy hlavních
-komponent a metody podpùrných vektorù(PCAModel.mat a SVMModel.mat)
- 
-%}
-
 %% cistka
 clc;
 clear all;
@@ -20,14 +11,20 @@ SegmentOFF = 0;
 %% naètení klasifikaèního a PCA modelu
 load('SVMModel.mat');
 load('PCAModel.mat');
+
 %% automatické naètení souboru
 fprintf('Naèítání souborù...\n');
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
+<<<<<<< HEAD
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\01.wav';
+=======
+ cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 if exist('cesta')                                                          % Existujeli cesta naète soubor
     [sample, fs] = audioread(cesta);
     info = audioinfo(cesta);
@@ -49,10 +46,37 @@ sample = sample(:,1);                                                      % zmo
 clear pathname;
 %% segmentace nahrávky
 fprintf('Segmentace samplù...\n');
+<<<<<<< HEAD
 [WindowID,pocet_oken, SegmentID,pocet_segmentu] = okno(sample, fs, 3500, 0.6);        % Segmentace na okna
                                 
 %% pøiøazení oken úderùm
  f = waitbar(0,' ', 'Name', 'Výpoèet energe v pásmech');
+=======
+[WindowID, SegmentID,pocet_segmentu] = okno(sample,fs);                       % Segmentace na jednotlivé údery
+
+%% filtrace a výpoèet energií
+fprintf('Výpoèet energe...\n');
+
+f = waitbar(0,' ', 'Name', 'Výpoèet energe v pásmech');
+for i = 1: pocet_segmentu
+   [filtrovanySMP] = banka_filtru(sample(WindowID(i,1):WindowID(i,2)));% Filtrace bankou filtrù
+   [E] = energie(filtrovanySMP, sample(WindowID(i,1):WindowID(i,2))); % Výpoèet energií v pásmech
+   SUM_E = [SUM_E E];
+   waitbar(i/pocet_segmentu,f,sprintf('%d Z %d',i,pocet_segmentu));
+end
+delete(f);                                  
+
+%% pøevedení nahrávky do prostoru PCA
+fprintf('Pøevedení nahrávky do prostoru PCA...\n');
+[pcaTranformed] = data2pca(SUM_E', PCAModel.PCAmu, PCAModel.PCAcoeff);
+
+%% klasifikace do tøíd
+fprintf('Klasifikace tøíd...\n');
+[SVMlabel,SVMscore] = predict(SVMModel,pcaTranformed);
+
+%% seskupení segmentù
+
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 clear i;
 l=1;
 if SegmentOFF == 1
@@ -63,6 +87,7 @@ if SegmentOFF == 1
 end
 for i = 1:pocet_segmentu
     for j = 1:length(WindowID)
+<<<<<<< HEAD
         if  SegmentID(i,1) <= WindowID(j,2)-2000 && WindowID(j,1) < SegmentID(i,1)+2000
             [filtrovanySMP] = banka_filtru(sample(WindowID(j,1):WindowID(j,2)));    % Filtrace bankou filtrù
             [E] = energie(filtrovanySMP, sample(WindowID(i,1):WindowID(i,2)));      % Výpoèet energií v pásmech
@@ -70,10 +95,15 @@ for i = 1:pocet_segmentu
             [SVMlabel,NegLoss ,SVMscore,q] = predict(SVMModel,pcaTranformed);
             SegmentLabels(l) = SVMlabel;
             SegmentStat(l,:) = q;
+=======
+        if  SegmentID(i,1) <= WindowID(j,1) && WindowID(j,1) < SegmentID(i,2)
+            SegmentLabels(l) = SVMlabel(j);
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
             l=l+1;
             
         end
     end
+<<<<<<< HEAD
     if exist('SegmentLabels') 
         modulo = mode(SegmentLabels);                                           % je vybrán nejèastìji analizovaný úder pomocí modula
         SegLab(i) = modulo;
@@ -83,6 +113,10 @@ for i = 1:pocet_segmentu
         SegStat(i,:) = procento*100;
         waitbar(i/pocet_segmentu,f,sprintf('%d Z %d',i,pocet_segmentu));
     end
+=======
+    modulo = mode(SegmentLabels);
+    SegLab(i) = modulo;
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
     clear SegmentLabels; 
     l=1;
 end
@@ -95,6 +129,7 @@ clear modulo;
 clear pcaTranformed; 
 delete(f);
 %% výsledky
+<<<<<<< HEAD
 fprintf('Zpracování výsledkù...\n');
 clear i;
 
@@ -272,3 +307,44 @@ LegendaFILE = uilabel(fig);
             LegendaFILE.HorizontalAlignment = 'center';
             
 uit.RowName = TextLabel;
+=======
+% cellID = num2cell(SegID);
+% 
+% vysledek =[SegLab cellID];
+% 
+% uit=uitable(figure,'Data',vysledek);
+figure;
+hold on;                                  % vykreslení obálky a mezí
+ax = gca;
+plot(sample);
+ax.YLim = [-1.1 1];
+clear i;
+
+c = 0;
+for i = 1:length(SegmentID)
+%   plot ([SegID(i,1) SegID(i,1)], [-0.2 0.2],'r');
+%   plot ([SegID(i,2) SegID(i,2)], [-0.2 0.2],'g');
+
+    %text(SegmentID(i,1), -1.05  , SegmentID(i,1), 'Color', 'k')
+    switch SegLab(i)
+        case 1
+            text(SegmentID(i,1), -1.05  , 'Snare', 'Color', 'k');
+            area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','r','FaceAlpha',.1,'EdgeAlpha',.1)
+            area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','r','FaceAlpha',.1,'EdgeAlpha',.1)
+        case 2
+            text(SegmentID(i,1), -1.05  , 'Kick', 'Color', 'k');
+            area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','g','FaceAlpha',.1,'EdgeAlpha',.1)
+            area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','g','FaceAlpha',.1,'EdgeAlpha',.1)
+        case 3
+            text(SegmentID(i,1), -1.05  , 'Hi-Hat', 'Color', 'k');
+            area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','b','FaceAlpha',.1,'EdgeAlpha',.1)
+            area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','b','FaceAlpha',.1,'EdgeAlpha',.1)
+    end    
+end
+
+hold off;
+% for i = 1:k
+%     sound(sample(SegID(i,1):SegID(i,2)),48000);
+%     pause;
+% end
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery

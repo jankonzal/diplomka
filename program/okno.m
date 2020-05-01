@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap)
 %{
     Tato funkce rozdìlí signál do èasovýc oken a hledá zaèátky a konce úderù.
@@ -12,13 +13,20 @@ function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap)
 %   clc;
 %   clear all;
 %   close all;
+=======
+function [WindowID,SegmentID,k] = okno(sample, fs)
+%%cistka
+%   %clc;
+%   %clear all;
+%   %close all;
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 % 
 % 
 % %% naètení souboru
 % % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
-%  cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
+% % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
 % % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
+%  cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
 % % cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % % cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
 % if exist('cesta')
@@ -37,67 +45,46 @@ function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap)
 %% definice promìnných
 WindowID = 1;
 PriznakySum = [0 0];
-WinNum = 1;
-% overlap = 0.6;
-% WinLen=3500;
+k = 1;
+WinLen = 3500;
+overlap= 0.7;
 WinMinus = 1-overlap;
 %% normalizace hlasitosti
-
-
-[E] = rms(sample);
-if E < 0.4                                                                 % pokud je energie menší než 2500 je signál zesílen
-    while E < 0.4
-    [E] = rms(sample);
+[E] = energie(sample);
+if E < 2500
+    while E < 2500
+    [E] = energie(sample);
     sample = sample*1.1;
     end
-else                                                                        % pokud je energie menší než 2500 je signál zeslaben
-    while E > 0.4                                                          
-    [E] = rms(sample);
+else
+    while E > 2500
+    [E] = energie(sample);
     sample = sample*0.9;
     end
 end
-
-dRE = expander(-60);
-%sample = dRE(sample);
-dRL = limiter(-1);
-sample = dRL(sample);
 %% segmentace plovoucím oknem
 for i=1:WinLen*WinMinus:length(sample)
-    WindowID (WinNum,1) = i;
-    WindowID (WinNum,2) = i+WinLen;
-     if WindowID (WinNum,2) > length(sample)
-        WindowID (WinNum,2) = length(sample);
+    WindowID (k,1) = i;
+    WindowID (k,2) = i+WinLen;
+     if WindowID (k,2) > length(sample)
+        WindowID (k,2) = length(sample);
      end
-    [priznaky] = tr_detektor(sample(WindowID (WinNum,1):WindowID (WinNum,2)),0,i);    % detekce transientù pro hledání úderù
-    PriznakySum= [PriznakySum; priznaky];                                   % vektor pøíznakù zaèátkù a koncù transientù 
+    [priznaky] = tr_detektor(sample(WindowID (k,1):WindowID (k,2)),0,i);
+    PriznakySum= [PriznakySum; priznaky]; 
+    
+     
     %priznaky 
     %pause;
-    WinNum=WinNum+1;
+    k=k+1;
+  
 end
 
-WinNum=WinNum-1;
-WindowID (WinNum,2) = length(sample);
-%% ovìøení zaèátku
-clear i;
-WhileOff=0;
-i=1;
-SegOn = 0;
-while WhileOff == 0
-    if PriznakySum(i,1) ~= 0
-        WhileOff=1;
-        SegOn = 1;
-    end
-    if PriznakySum(i,2) ~= 0
-        WhileOff=1;
-    end
-    i=i+1;
-end
+k=k-1;
+WindowID (k,2) = length(sample);
+%% Seskupení segmentù
 
-%% hledání úderù
-% Cyklus prohledává pøíznaky a vynechává nolové hodnoty. Hledal i více
-% podobných pøíznakù to je teï vypnuto.
-clear i;
-first=1;
+i=[];
+SegmentID(1,1)=1;
 p=1;
 q=1;
 s=1;
@@ -107,13 +94,8 @@ for i=1:length(PriznakySum)
         StartMean(p) = PriznakySum(i,1);
         p=p+1;
     else
-        if p>1 && first == 1;
-            SegmentID(q,1) = mean(StartMean);
-            q=q+1;
-            first = 0;
-        end
-        if p>2
-           SegmentID(q,1) = mean(StartMean);
+        if p>1
+            SegmentID(q+1,1) = mean(StartMean);
             q=q+1;
         end
         StartMean = [];
@@ -124,7 +106,7 @@ for i=1:length(PriznakySum)
         StopMean(s) = PriznakySum(i,2);
         s=s+1;
     else
-        if s>2
+        if s>1
             SegmentID(t,2) = mean(StopMean);
             t=t+1;
         end
@@ -132,6 +114,7 @@ for i=1:length(PriznakySum)
         s=1;
     end      
 end
+<<<<<<< HEAD
 q=q-1;
 if q < 1
     q = 1;
@@ -183,4 +166,6 @@ if buffer(i,2) == 0
 end
 clear SegmentID;
 SegmentID = buffer;
+=======
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 end    
