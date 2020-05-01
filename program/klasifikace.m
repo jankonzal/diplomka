@@ -1,13 +1,25 @@
-function [Mdl] = klasifikace(score);
+function [Mdl] = klasifikace(score,info);
+info = table2array(info);
 X = score;
-for i = 1:221
-Y(i,1)=1;       %1 je SN 
+
+for i = 1:info(1,1)
+    Y(i,1)=1;    %1 je SN 
 end
-for i = 222:323
-Y(i,1)=2;       %2 je KICK
+j=i;
+clear i;
+for i = j:j+info(1,2)
+    Y(i,1)=2;    %1 je Kick 
 end
-<<<<<<< HEAD
-<<<<<<< HEAD
+j=i;
+clear i;
+for i = j:j+info(1,3)
+    Y(i,1)=3;    %3 je Hi-Hat
+end
+j=i;
+clear i;
+for i = j:j+info(1,4)
+    Y(i,1)=4;    %4 je Crash 
+end
 j=i;
 clear i;
 for i = j:j+info(1,5)
@@ -22,25 +34,7 @@ j=i;
 clear i;
 for i = j:j+info(1,7)
     Y(i,1)=7;    %21 je Kick + Hi-Hat
-=======
-for i = 324:427
-Y(i,1)=3;       % je Hi-Hat
->>>>>>> parent of c361f40... rozšíření na dvoj údery
-=======
-for i = 324:427
-Y(i,1)=3;       % je Hi-Hat
->>>>>>> parent of c361f40... rozšíření na dvoj údery
 end
-% for i = 427:442 
-% Y(i,1)={'ftom'};
-% end
-% for i = 442:479
-% Y(i,1)={'crash'};
-% end
-% for i = 479:499
-% Y(i,1)={'ride'};
-% end
-
 %% SVM
 t = templateSVM('Standardize',true);
 Mdl = fitcecoc(X,Y,'FitPosterior',true);

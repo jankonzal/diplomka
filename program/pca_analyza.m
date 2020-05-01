@@ -1,4 +1,4 @@
-function [coeff,score,latent,mu] = pca_analyza(E, pocty);
+function [coeff,score,latent,mu] = pca_analyza(E, info);
 %{
 Funkce pro výpoèet hlavních komponent.
 Vstupem jsou data, a poèty samplù pro jednotlivé bubny (pro barevné rozlièení)
@@ -6,35 +6,27 @@ Výstupem jesou koueficienty, skóre, vlastní èísla, odhadované støedy.
 Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 %}
 %% PCA 
-<<<<<<< HEAD
-<<<<<<< HEAD
 [coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',9);
-=======
-[coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',7);
->>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
-=======
-[coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',7);
->>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 
 %% vykreslení
 
-% pocet_PC = length(explained);                                            % graf úpatí vlastních hodnot
-% figure      % scre plot
-% plot (1:pocet_PC,explained,'-b');
-% hold on;
-% plot (1:pocet_PC,explained,'+r');
-% ax = gca;
-% ax.XLim = [0 6];
-% xticks([1 2 3 4 5]);
-% xticklabels({'PC1','PC2','PC3','PC4','PC5'});
-% ax.YLim = [-10 100];
-% yticks([0 10 20 30 40 50 60 70 80 90 100]);
-% yticklabels({'0','10','20','30','40','50','60','70','80','90','100'});
-% ylabel('Vlastní hodnota [%]');
-% xlabel('Hlavní komponenty [-]');
-% grid on;
-% %title('Graf závislosti vlastní hodnoty na poøadí hlavní komponenty')
-% hold off;
+pocet_PC = length(explained);                                            % graf úpatí vlastních hodnot
+figure      % scre plot
+plot (1:pocet_PC,explained,'-b');
+hold on;
+plot (1:pocet_PC,explained,'+r');
+ax = gca;
+ax.XLim = [0 12];
+xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+xticklabels({'PC1','PC2','PC3','PC4','PC5','PC6','PC7','PC8','PC9','PC10','PC11','PC12'});
+ax.YLim = [-10 100];
+yticks([0 10 20 30 40 50 60 70 80 90 100]);
+yticklabels({'0','10','20','30','40','50','60','70','80','90','100'});
+ylabel('Vlastní hodnota [%]');
+xlabel('Hlavní komponenty [-]');
+grid on;
+%title('Graf závislosti vlastní hodnoty na poøadí hlavní komponenty')
+hold off;
 % 
 % 
 % g = figure;
@@ -42,8 +34,6 @@ Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 % uit.Data = explained;
 % uit.ColumnName = {'Vlastní èísla [%]'};
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 % figure                                                                   % objekty                                               
 % plot(score(:,1),score(:,2),'or');
 % hold on;
@@ -99,48 +89,6 @@ ylabel('PC2');
 xlabel('PC1');
 zlabel('PC3');
 hold off;
-=======
-=======
->>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
-figure                                                                   % objekty                                               
-plot(score(:,1),score(:,2),'or');
-hold on;
-XL1 = [-40 40];
-YL1 = [0 0];
-plot(XL1,YL1,'k');
-YL2 = [-30 30];
-XL2 = [0 0];
-plot(XL2,YL2,'k');
-grid on;
-axis equal
-ax = gca;
-ax.XLim = [-40 40];
-ax.YLim = [-30 30];
-ylabel('PC2');
-xlabel('PC1');
-hold off;
-
-% figure                                                                     % objekty 3d
-% sc1 = 1:221;                                                               % rozdìlení poètù samplù pro jednotlivé bubny(zatím pro 3)
-% sc2 = 222:323;
-% sc3 = 324:427;
-% sc4 = 427:442;
-% sc5 = 442:479;
-% sc6 = 479:499;
-% scatter3(score(sc1,1),score(sc1,2),score(sc1,3),'.r');
-% hold on;
-% box;
-% scatter3(score(sc2,1),score(sc2,2),score(sc2,3),'.g');
-% scatter3(score(sc3,1),score(sc3,2),score(sc3,3),'.b');
-% 
-% 
-% grid on;
-% %legend ('malý buben', 'velký buben', 'hi-hat');
-% ylabel('PC2');
-% xlabel('PC1');
-% zlabel('PC3');
-% hold off;
->>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 
 
 % 

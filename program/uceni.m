@@ -24,7 +24,7 @@ close all;
 %% definice promìnných
 fprintf('Naèítání trénovacích dat...\n');
 
-%load('trenovaci.mat');                                                     % naètení trénovací struktury
+load('trenovaci.mat');                                                     % naètení trénovací struktury
 
 %% naètení samplù
 if ~exist('trenovaci') || isempty(trenovaci)                               % pokud neexistuje testovací struktura
@@ -40,11 +40,11 @@ fprintf('Analýza hlavních komponent...\n');
 
 %% vytvoøení klasifikaèního a PCA modelu
 fprintf('Ukládání modelù...\n');
-[SVMModel]=klasifikace(score);
+[SVMModel]=klasifikace(score, trenovaci.info);
 PCAModel = struct('PCAmu', mu, 'PCAcoeff', coeff);
 
 
 save SVMModel SVMModel
 save PCAModel PCAModel
-
+save trenovaci trenovaci
 fprintf('Hotovo\n');
