@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap)
 %{
     Tato funkce rozd�l� sign�l do �asov�c oken a hled� za��tky a konce �der�.
@@ -14,11 +15,16 @@ function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap)
 %   clear all;
 %   close all;
 =======
+=======
+>>>>>>> parent of c361f40... rozšíření na dvoj údery
 function [WindowID,SegmentID,k] = okno(sample, fs)
 %%cistka
 %   %clc;
 %   %clear all;
 %   %close all;
+<<<<<<< HEAD
+>>>>>>> parent of c361f40... rozšíření na dvoj údery
+=======
 >>>>>>> parent of c361f40... rozšíření na dvoj údery
 % 
 % 
@@ -115,6 +121,7 @@ for i=1:length(PriznakySum)
     end      
 end
 <<<<<<< HEAD
+<<<<<<< HEAD
 q=q-1;
 if q < 1
     q = 1;
@@ -166,6 +173,8 @@ if buffer(i,2) == 0
 end
 clear SegmentID;
 SegmentID = buffer;
+=======
+>>>>>>> parent of c361f40... rozšíření na dvoj údery
 =======
 >>>>>>> parent of c361f40... rozšíření na dvoj údery
 end    

@@ -19,9 +19,12 @@ fprintf('Naèítání souborù...\n');
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
 <<<<<<< HEAD
+<<<<<<< HEAD
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\01.wav';
 =======
+=======
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
  cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
 >>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
@@ -47,11 +50,14 @@ clear pathname;
 %% segmentace nahrávky
 fprintf('Segmentace samplù...\n');
 <<<<<<< HEAD
+<<<<<<< HEAD
 [WindowID,pocet_oken, SegmentID,pocet_segmentu] = okno(sample, fs, 3500, 0.6);        % Segmentace na okna
                                 
 %% pøiøazení oken úderùm
  f = waitbar(0,' ', 'Name', 'Výpoèet energe v pásmech');
 =======
+=======
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 [WindowID, SegmentID,pocet_segmentu] = okno(sample,fs);                       % Segmentace na jednotlivé údery
 
 %% filtrace a výpoèet energií
@@ -88,6 +94,7 @@ end
 for i = 1:pocet_segmentu
     for j = 1:length(WindowID)
 <<<<<<< HEAD
+<<<<<<< HEAD
         if  SegmentID(i,1) <= WindowID(j,2)-2000 && WindowID(j,1) < SegmentID(i,1)+2000
             [filtrovanySMP] = banka_filtru(sample(WindowID(j,1):WindowID(j,2)));    % Filtrace bankou filtrù
             [E] = energie(filtrovanySMP, sample(WindowID(i,1):WindowID(i,2)));      % Výpoèet energií v pásmech
@@ -96,6 +103,8 @@ for i = 1:pocet_segmentu
             SegmentLabels(l) = SVMlabel;
             SegmentStat(l,:) = q;
 =======
+=======
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
         if  SegmentID(i,1) <= WindowID(j,1) && WindowID(j,1) < SegmentID(i,2)
             SegmentLabels(l) = SVMlabel(j);
 >>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
@@ -103,6 +112,7 @@ for i = 1:pocet_segmentu
             
         end
     end
+<<<<<<< HEAD
 <<<<<<< HEAD
     if exist('SegmentLabels') 
         modulo = mode(SegmentLabels);                                           % je vybrán nejèastìji analizovaný úder pomocí modula
@@ -113,6 +123,10 @@ for i = 1:pocet_segmentu
         SegStat(i,:) = procento*100;
         waitbar(i/pocet_segmentu,f,sprintf('%d Z %d',i,pocet_segmentu));
     end
+=======
+    modulo = mode(SegmentLabels);
+    SegLab(i) = modulo;
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 =======
     modulo = mode(SegmentLabels);
     SegLab(i) = modulo;
@@ -346,5 +360,9 @@ hold off;
 % for i = 1:k
 %     sound(sample(SegID(i,1):SegID(i,2)),48000);
 %     pause;
+<<<<<<< HEAD
+% end
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
+=======
 % end
 >>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery

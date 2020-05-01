@@ -7,7 +7,11 @@ Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 %}
 %% PCA 
 <<<<<<< HEAD
+<<<<<<< HEAD
 [coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',9);
+=======
+[coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',7);
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 =======
 [coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',7);
 >>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
@@ -38,6 +42,7 @@ Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 % uit.Data = explained;
 % uit.ColumnName = {'Vlastní èísla [%]'};
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 % figure                                                                   % objekty                                               
 % plot(score(:,1),score(:,2),'or');
@@ -95,6 +100,8 @@ xlabel('PC1');
 zlabel('PC3');
 hold off;
 =======
+=======
+>>>>>>> parent of c361f40... rozÅ¡Ã­Å™enÃ­ na dvoj Ãºdery
 figure                                                                   % objekty                                               
 plot(score(:,1),score(:,2),'or');
 hold on;

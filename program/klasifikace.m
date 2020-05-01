@@ -7,6 +7,7 @@ for i = 222:323
 Y(i,1)=2;       %2 je KICK
 end
 <<<<<<< HEAD
+<<<<<<< HEAD
 j=i;
 clear i;
 for i = j:j+info(1,5)
@@ -21,6 +22,10 @@ j=i;
 clear i;
 for i = j:j+info(1,7)
     Y(i,1)=7;    %21 je Kick + Hi-Hat
+=======
+for i = 324:427
+Y(i,1)=3;       % je Hi-Hat
+>>>>>>> parent of c361f40... rozšíření na dvoj údery
 =======
 for i = 324:427
 Y(i,1)=3;       % je Hi-Hat
