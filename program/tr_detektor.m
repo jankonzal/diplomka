@@ -1,4 +1,15 @@
 function [segmentID] = tr_detektor(okno,GrafOn,delta)
+%{
+ Tato funkce je detektor transientù, slouží k hledání zaèátkù a koncù úderù.
+ 
+ Vstupními  parametry jsou úsek zvukového signálu, požadavek na grafické
+ zobrazení 1/0, a posun o který má být k ukazateli úderu pøipsán,
+ respektive èas zaèátku okna. Poukd není èas zaèátku okna zadán je poèítáno
+ od nuly.
+
+ Výstupním parametrem jous ukazatele zaèátkù a koncù úderù.
+%}
+
 % clc;
 % clear all;
 % close all;
@@ -24,14 +35,16 @@ function [segmentID] = tr_detektor(okno,GrafOn,delta)
 % okno = sample(:,1);                                                       % zmonìní samplu
 
 %% Definice promìnných
-prah = 0.01;
-PrahPlot = prah * ones(1, length(okno)); 
+prah = 0.03;                                                               % rozhodovací úroveò
+PrahPlot = prah * ones(1, length(okno));                                   % promìnná pro vykreslení prahu
 j = 1;                                                                     % iterace
 k = 1;
+t = 1;
 start = 0;
 stop = 0;
-segmentID = [0 0];
+segmentID = [0 0];                                                         
 ochrana = 0;
+
 %% Diferenèní filtrace
 
 for i = 1:length(okno)
@@ -41,52 +54,48 @@ for i = 1:length(okno)
     DifFilter(i) = okno(i)-okno(i-1);
     end
 end
-
-squared = DifFilter.*DifFilter;
-%% Limiter
-dRL = limiter(-30);
-squared = dRL(squared);
+%DifFilter = DifFilter.*DifFilter;
 %% Obálka
-[up] = envelope(DifFilter, 2000, 'rms');
+[up] = envelope(DifFilter, 900,'rms');
 
 %% segmentace pøíznakù
-for i = 1: length(okno)                                                                   
-    if ochrana ==0
-        if up(i) > prah
+for i = 1: length(okno)
+    if ochrana < 1                                                                        % ochranný interval pøi zápisu
+        if up(i) > prah                                                     % nad prahem
             stop = 1;
             if start == 1
-                 if exist('delta')
-                    segmentID(k,1) = i+delta;
+                 if exist('delta')                                          % zápis hodnoty
+                    segmentID(k,1) = i+delta;                               % existuje poèáteèní èas?
 
                  else
                      segmentID(k,1) = i;
 
-                 end
-                 ochrana = 40;
+                 end  
+                 ochrana = 30;
                 k = k+1;
                 start = 0;
             end
         else
             start = 1;
             if stop == 1
-                 if exist('delta')
-                    segmentID(k,2) = i+delta;
+                 if exist('delta')                                          % to stejné jen pro sestup pod rozhodovací úroveò
+                    segmentID(t,2) = i+delta;
 
                  else
-                     segmentID(k,2) = i;
+                     segmentID(t,2) = i;
 
                  end
-                 ochrana = 40;
-                 k = k+1;
+                 ochrana = 30;
+                 t = t+1;
                  stop = 0;
             end
         end
-        orchana = ochrana-1;
     end
+    ochrana = ochrana-1;
 end
 k=k-1;
 %% vykreslení
-% figure(1);
+% figure;
 % subplot(3,1,1);
 % plot(okno);
 % ax = gca;
@@ -103,15 +112,16 @@ k=k-1;
 % hold off;
 % bx = gca;
 % bx.YLim = [0 0.1];
-if GrafOn == 1
-   figure(2);
+
+if GrafOn == 1                                                              % zobrazení prùchodù rozhodovací úrovní
+   figure;
    plot(DifFilter);
    hold on;
    plot(up); 
    plot(PrahPlot);
    hold off;
-   bx = gca;
-   bx.YLim = [0 0.05];
+   
+
 end
 
 

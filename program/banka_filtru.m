@@ -31,9 +31,8 @@ while fh < Fs/2
     
     %% vypocet banky filtru
     if fh < Fs/2
-        
         Wn = [fd/(Fs/2) fh/(Fs/2)];                   % vektor mezních kmitoètù
-        [z,p,k] = butter (rad,Wn,type);               % výpoèet filtru
+        [z,p,k] = butter (rad,Wn,type);           % výpoèet filtru
         [b,a] = zp2tf(z,p,k);                         % pøevodn nulových bodù a pólù na pøenosovou funkci
         filtrovane_samply(:,i) = filter(b,a,sample);  % filtrace signálu
     
@@ -47,8 +46,8 @@ while fh < Fs/2
 %         subplot(3,1,2);
 %         plot (filtrovane_samply(:,i))                                    % èasový prùbìh vyltrovaného samplu
 %         subplot(3,1,3);
-%        freqz(b,a,Fs/2,Fs);                                               % pøenos filtru
-
+%         freqz(b,a,Fs/2,Fs);                                               % pøenos filtru
+% 
 %         figure;
 %         fft_sample = abs(fft(sample));                                   % spektrum samplu 
 %         fft_filter = abs(fft(filtrovane_samply (:,i)));                  % spektrum filtrovaného samplu
@@ -56,9 +55,13 @@ while fh < Fs/2
 %         plot(fft_sample);
 %         subplot(2,1,2)
 %         plot(fft_filter);
+%           hold on;
+%           freqz(b,a,Fs/2,Fs); 
+          
         %% iterace
           i = i+1;
     end
+    
 end
     for j = 1:length(filtrovane_samply(1,:))                               
         stredni_f(j,1) = fs_v(j);                                            % pøedání støedních kmitoètù filtrù
