@@ -17,7 +17,7 @@ fprintf('Naèítání souborù...\n');
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
- cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
+% cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
 if exist('cesta')                                                          % Existujeli cesta naète soubor
     [sample, fs] = audioread(cesta);
@@ -88,6 +88,7 @@ hold on;                                  % vykreslení obálky a mezí
 ax = gca;
 plot(sample);
 ax.YLim = [-1.1 1];
+title('filtrovaný');
 clear i;
 
 c = 0;
@@ -103,13 +104,23 @@ for i = 1:length(SegmentID)
             area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','r','FaceAlpha',.1,'EdgeAlpha',.1)
         case 2
             text(SegmentID(i,1), -1.05  , 'Kick', 'Color', 'k');
-            area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','g','FaceAlpha',.1,'EdgeAlpha',.1)
-            area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','g','FaceAlpha',.1,'EdgeAlpha',.1)
+            area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','y','FaceAlpha',.1,'EdgeAlpha',.1)
+        area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','y','FaceAlpha',.1,'EdgeAlpha',.1)
         case 3
             text(SegmentID(i,1), -1.05  , 'Hi-Hat', 'Color', 'k');
-            area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','b','FaceAlpha',.1,'EdgeAlpha',.1)
-            area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','b','FaceAlpha',.1,'EdgeAlpha',.1)
-    end    
+    end
+        
+        
+    if c == 1
+        area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','y','FaceAlpha',.1,'EdgeAlpha',.1)
+        area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','y','FaceAlpha',.1,'EdgeAlpha',.1)
+        c=0;
+    else
+        area([SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor','r','FaceAlpha',.1,'EdgeAlpha',.1)
+        area([SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','r','FaceAlpha',.1,'EdgeAlpha',.1)
+        c=1;
+    end
+    
 end
 
 hold off;
