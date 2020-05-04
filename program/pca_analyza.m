@@ -6,7 +6,7 @@ Výstupem jesou koueficienty, skóre, vlastní èísla, odhadované støedy.
 Pro zobrazení vysledkù PCA, lze odkomentovat požadovaný graf.
 %}
 %% PCA 
-[coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',9);
+[coeff,score,latent,tsquared,explained,mu] = pca(E','NumComponents',10);
 
 %% vykreslení
 

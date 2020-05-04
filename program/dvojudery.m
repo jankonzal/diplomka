@@ -15,7 +15,7 @@ uroven1 = 0.2;
 uroven2 = 0.2;
 UrovenOut = 0.4;
 Pomer1 = 1;
-Pomer2 = 1;
+Pomer2 = 0.5;
 
 %% naètení složek
 path_1 = uigetdir(path,'První složka se samply'); 
@@ -88,18 +88,18 @@ f = waitbar(0,'Míchání samplù', 'Name', 'Míchání samplu:');
 
     out = sample_1 * Pomer1 + sample_2 * Pomer2;
     
-    [RMS] = rms(out);
-    if RMS < UrovenOut                                                                
-        while RMS < UrovenOut
-        [RMS] = rms(out);
-        out = out*1.1;
-        end
-    else                                                                        
-        while RMS > UrovenOut                                                          
-        [RMS] = rms(out);
-        out = out*0.9;
-        end
-    end
+%     [RMS] = rms(out);
+%     if RMS < UrovenOut                                                                
+%         while RMS < UrovenOut
+%         [RMS] = rms(out);
+%         out = out*1.1;
+%         end
+%     else                                                                        
+%         while RMS > UrovenOut                                                          
+%         [RMS] = rms(out);
+%         out = out*0.9;
+%         end
+%     end
     out = dRL(out);
     NameOut = sprintf('%d.wav', i);
     audiowrite(fullfile( PathOut, NameOut),out,fs);

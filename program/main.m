@@ -26,7 +26,7 @@ fprintf('Naèítání souborù...\n');
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
-% cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
+ cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\01.wav';
 if exist('cesta')                                                          % Existujeli cesta naète soubor
     [sample, fs] = audioread(cesta);
@@ -49,7 +49,7 @@ sample = sample(:,1);                                                      % zmo
 clear pathname;
 %% segmentace nahrávky
 fprintf('Segmentace samplù...\n');
-[WindowID,pocet_oken, SegmentID,pocet_segmentu] = okno(sample, fs, 3500, 0.6);        % Segmentace na okna
+[WindowID,pocet_oken, SegmentID,pocet_segmentu] = okno(sample, fs, 3500, 0.6, SegmentOFF);        % Segmentace na okna
                                 
 %% pøiøazení oken úderùm
  f = waitbar(0,' ', 'Name', 'Výpoèet energe v pásmech');
@@ -105,26 +105,36 @@ end
 %% výsledky
 clear ax;
 % uitable
-fig = uifigure('Name', 'Výsledky','Position',[100 100 750 550]);
+fig = uifigure('Name', 'Výsledky','Position',[100 100 1050 600]);
 
-uit = uitable('Parent',fig,'Position',[25 50 700 200]);
+pravdeposobnost = uipanel(fig,'Title','Pravdìpodobnost pøíslušnosti dané tøídy [%]','Position',[20 20 720 265]);
+uit = uitable('Parent',pravdeposobnost,'Position',[0 0 700 250]);
 t = array2table(round(SegStat));
 uit.Data = t;
 uit.ColumnName = {'Snare','Kick','Hi-Hat','Crash','Ride','Snare + Hi-Hat', 'Kick + Hi-Hat'};
 
+
+cas = uipanel(fig,'Title','Èasové znaèky [vzorek]','Position',[745 20 300 265]);
+uit2 = uitable('Parent',cas,'Position',[0 0 290 250]);
+uit2.Data = SegmentID;
+uit2.ColumnName = {'Zaèátek','Konec'};
+
 % barvy
 % Create TabGroup
-TabGroup = uitabgroup(fig);
-TabGroup.Position = [20 260 720 250];
+graf = uipanel(fig,'Title','Èasový prúbìh signálu','Position',[20 290 1025 310]);
+TabGroup = uitabgroup(graf);
+TabGroup.Position = [0 0 1025 250];
 % Create Tab
 Tab1 = uitab(TabGroup);
 Tab1.Title = 'Pravdìpodobnost pøíslušnosti';
 % uiaxes
-        ax = uiaxes('Parent',Tab1, 'Position',[10 10 700 200]);
+        ax = uiaxes('Parent',Tab1, 'Position',[10 10 1010 200]);
         hold(ax,'on');
         ax.Box = 'on';
         ax.YLim = [-1.1 1];
         plot(ax,sample);
+        xlabel(ax,'t');
+        ylabel(ax,'s (t)');
         clear i;
         c = 0;
         for i = 1:pocet_segmentu
@@ -176,11 +186,13 @@ Tab1.Title = 'Pravdìpodobnost pøíslušnosti';
 Tab2 = uitab(TabGroup);
 Tab2.Title = 'Výbìr podle nejèastìjšího výskytu';
 % uiaxes
-        ay = uiaxes('Parent',Tab2,'Position',[10 10 700 200]);
+        ay = uiaxes('Parent',Tab2,'Position',[10 10 1010 200]);
         hold(ay,'on');
         ay.Box = 'on';
         ay.YLim = [-1.1 1];
         plot(ay,sample);
+        xlabel(ay,'t');
+        ylabel(ay,'s (t)');
         clear i;
         c = 0;
         for i = 1:pocet_segmentu
@@ -190,85 +202,88 @@ Tab2.Title = 'Výbìr podle nejèastìjšího výskytu';
                         'r','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','r',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Snare'}; 
+                    %TextLabel(i) = {'Snare'}; 
                 case 2                                                             % Kick
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor',...
                         'g','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','g',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Kick'}; 
+                    %TextLabel(i) = {'Kick'}; 
                 case 3                                                             % Hi-Hat
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor',...
                         'b','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','b',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Hi-Hat'}; 
+                    %TextLabel(i) = {'Hi-Hat'}; 
                 case 4                                                             % Crash
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor',...
                         'c','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','c',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Crash'};
+                    %TextLabel(i) = {'Crash'};
                 case 5                                                             % Ride
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor',...
                         'm','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','m',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Ride'};
+                    %TextLabel(i) = {'Ride'};
                 case 6                                                            % SN+HH
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor',...
                         'y','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','y',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Snare + Hi-Hat'};
+                    %TextLabel(i) = {'Snare + Hi-Hat'};
                 case 7                                                            % KICK+HH
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [-1.1 -1.1],'FaceColor',...
                         'k','FaceAlpha',.1,'EdgeAlpha',.1)
                     area(ay,[SegmentID(i,1) SegmentID(i,2)], [1 1],'FaceColor','k',...
                         'FaceAlpha',.1,'EdgeAlpha',.1)
-                    TextLabel(i) = {'Kick + Hi-Hat'};
+                    %TextLabel(i) = {'Kick + Hi-Hat'};
             end    
         end
         clear c;
 % legenda
-LegendaSnare = uilabel(fig);
-            LegendaSnare.Position = [25 520 60 22];
+LegendaSnare = uilabel(graf);
+            LegendaSnare.Position = [0 260 60 22];
             LegendaSnare.Text = 'Snare';
             LegendaSnare.HorizontalAlignment = 'center';
             LegendaSnare.BackgroundColor = [1 0.898 0.898];
-LegendaKick = uilabel(fig);
-            LegendaKick.Position = [88 520 60 22];
+LegendaKick = uilabel(graf);
+            LegendaKick.Position = [63 260 60 22];
             LegendaKick.Text = 'Kick';
             LegendaKick.HorizontalAlignment = 'center';
             LegendaKick.BackgroundColor = [0.898 1 0.898];
-LegendaHiHat = uilabel(fig);
-            LegendaHiHat.Position = [151 520 60 22];
-            LegendaHiHat.Text = 'Hi-Hat';
+LegendaHiHat = uilabel(graf);
+            LegendaHiHat.Position = [126 260 85 22];
+            LegendaHiHat.Text = 'Hi-Hat (close)';
             LegendaHiHat.HorizontalAlignment = 'center';
             LegendaHiHat.BackgroundColor = [0.898 0.898 1];
-LegendaCrash = uilabel(fig);
-            LegendaCrash.Position = [214 520 60 22];
+LegendaCrash = uilabel(graf);
+            LegendaCrash.Position = [214 260 60 22];
             LegendaCrash.Text = 'Crash';
             LegendaCrash.HorizontalAlignment = 'center';
             LegendaCrash.BackgroundColor = [0.898 1 1];
-LegendaRide = uilabel(fig);
-            LegendaRide.Position = [277 520 60 22];
+LegendaRide = uilabel(graf);
+            LegendaRide.Position = [277 260 60 22];
             LegendaRide.Text = 'Ride';
             LegendaRide.HorizontalAlignment = 'center';
             LegendaRide.BackgroundColor = [1 0.898 1];
-LegendaSnHh = uilabel(fig);
-            LegendaSnHh.Position = [340 520 120 22];
+LegendaSnHh = uilabel(graf);
+            LegendaSnHh.Position = [340 260 120 22];
             LegendaSnHh.Text = 'Snare + Hi-Hat (close)';
             LegendaSnHh.HorizontalAlignment = 'center';
             LegendaSnHh.BackgroundColor = [1 1 0.898];
-LegendaSnK = uilabel(fig);
-            LegendaSnK.Position = [463 520 120 22];
+LegendaSnK = uilabel(graf);
+            LegendaSnK.Position = [463 260 120 22];
             LegendaSnK.Text = 'Kick + Hi-Hat (close)';
             LegendaSnK.HorizontalAlignment = 'center';
             LegendaSnK.BackgroundColor = [0.898 0.898 0.898];
-LegendaFILE = uilabel(fig);
-            LegendaFILE.Position = [586 520 120 22];
-            LegendaFILE.Text = filename;
-            LegendaFILE.HorizontalAlignment = 'center';
+
+FileText = sprintf('Sample: %s',filename);
+LegendaFILE = uilabel(graf);
+            LegendaFILE.Position = [625 260 300 22];
+            LegendaFILE.Text = FileText;
+            LegendaFILE.HorizontalAlignment = 'left';
             
 uit.RowName = TextLabel;
+uit2.RowName = TextLabel;

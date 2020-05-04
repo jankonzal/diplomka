@@ -1,4 +1,4 @@
-function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap)
+function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap, SegmentOFF)
 %{
     Tato funkce rozdìlí signál do èasovýc oken a hledá zaèátky a konce úderù.
     Vstupními parametry jsou zvukový signál, vzorkovací kmitoèet, velikost
@@ -41,6 +41,12 @@ WinNum = 1;
 % overlap = 0.6;
 % WinLen=3500;
 WinMinus = 1-overlap;
+if SegmentOFF == 1
+    pocet_segmentu = 1;
+    clear SegmentID;
+    SegmentID(1,1) = 1;
+    SegmentID(1,2) = length(sample);
+end
 %% normalizace hlasitosti
 
 
