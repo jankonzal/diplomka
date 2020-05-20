@@ -35,41 +35,41 @@ function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap, Segme
 % end
 % sample = sample(:,1);                                                       % zmonìní samplu
 %% definice promìnných
-WindowID = 1;
-PriznakySum = [0 0];
-WinNum = 1;
-% overlap = 0.6;
+WindowID = 1;                                                               % èasové znaèky oken
+PriznakySum = [0 0];                                                        % pøíznaky zaèátkù a koncù úderù
+WinNum = 1;                                                                 % poèet oken
+% overlap = 0.6;                                                            
 % WinLen=3500;
-WinMinus = 1-overlap;
+WinMinus = 1-overlap;                                                       %pøepoèet pøwsahu
 if SegmentOFF == 1
-    pocet_segmentu = 1;
+    pocet_segmentu = 1;                                                     
     clear SegmentID;
-    SegmentID(1,1) = 1;
+    SegmentID(1,1) = 1;                                                     % èasové znaèky zaèátkù akoncù úderù
     SegmentID(1,2) = length(sample);
 end
 %% normalizace hlasitosti
 
 
 [E] = rms(sample);
-if E < 0.4                                                                 % pokud je energie menší než 2500 je signál zesílen
+if E < 0.4                                                                 % pokud je energie menší než 0.4 (RMS) je signál zesílen
     while E < 0.4
     [E] = rms(sample);
     sample = sample*1.1;
     end
-else                                                                        % pokud je energie menší než 2500 je signál zeslaben
+else                                                                        % pokud je energie menší než 0.4 (RMS) je signál zeslaben
     while E > 0.4                                                          
     [E] = rms(sample);
     sample = sample*0.9;
     end
 end
 
-dRE = expander(-60);
+dRE = expander(-60);                                                        % expander
 %sample = dRE(sample);
-dRL = limiter(-1);
+dRL = limiter(-1);                                                          % limiter
 sample = dRL(sample);
 %% segmentace plovoucím oknem
 for i=1:WinLen*WinMinus:length(sample)
-    WindowID (WinNum,1) = i;
+    WindowID (WinNum,1) = i;    
     WindowID (WinNum,2) = i+WinLen;
      if WindowID (WinNum,2) > length(sample)
         WindowID (WinNum,2) = length(sample);
@@ -78,12 +78,12 @@ for i=1:WinLen*WinMinus:length(sample)
     PriznakySum= [PriznakySum; priznaky];                                   % vektor pøíznakù zaèátkù a koncù transientù 
     %priznaky 
     %pause;
-    WinNum=WinNum+1;
+    WinNum=WinNum+1;                                                        %poèet oken 
 end
 
 WinNum=WinNum-1;
 WindowID (WinNum,2) = length(sample);
-%% ovìøení zaèátku
+%% ovìøení zaèátku - pokud je na zaèátku nahrávky signál silnìjší než prahová úroveò
 clear i;
 WhileOff=0;
 i=1;
@@ -101,7 +101,7 @@ end
 
 %% hledání úderù
 % Cyklus prohledává pøíznaky a vynechává nolové hodnoty. Hledal i více
-% podobných pøíznakù to je teï vypnuto.
+% Sousedící pøíznaky prùmìruje
 clear i;
 first=1;
 p=1;
@@ -143,7 +143,7 @@ if q < 1
     q = 1;
 end
 %% ovìøení zaèátkù akoncù
-
+% pokud se vyskytne chyba zkrátí úder jen na okna v zaèátku úderu
 clear i;
 if SegmentID (q,1) == 0
     SegmentCheck(1,1) = 1;
@@ -184,6 +184,7 @@ for i = 1:q
     
         
 end
+%% pøíprava pro výstup
 if buffer(i,2) == 0
    buffer (i,2) = SegmentCheck(i,1); 
 end

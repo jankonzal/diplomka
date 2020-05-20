@@ -114,11 +114,19 @@ k=k-1;
 % bx.YLim = [0 0.1];
 
 if GrafOn == 1                                                              % zobrazení prùchodù rozhodovací úrovní
+   dt = 1/48000;
+   time = (0 :dt: (length(DifFilter)*dt)-dt);
    figure;
    plot(DifFilter);
    hold on;
    plot(up); 
    plot(PrahPlot);
+   bx = gca;
+   bx.YLim = [-0.4 0.4];
+   bx.XLim = [0 400000];
+   ylabel ('S(t)');
+   xlabel ('t');
+   
    hold off;
    
 

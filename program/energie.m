@@ -15,11 +15,26 @@ end
 % figure;
 % subplot(2,1,1);
 % bar(E);                                                                  % zobrazení energií v pásmech
-% 
-% xticklabels({'25','50','200','630','2000','6400'});
+% xticks([1 3 5 7 9 11 13 15 17 19 21 23 25 27 29]);
+% xticklabels({'25','40','63','100','160','250','400'...
+%     '630','1000','1600','2500','4000','6300','10000', '20000'});
+% ylabel('Energie');
+% xlabel('Frekvence [Hz]');
+% title ('Energie ve frekvenèních pásmech');
 % subplot(2,1,2);
-% fft_sample = abs(fft(puvodni_samply));                                   % spektrum signálu
-% semilogx(fft_sample);
-%          ax = gca;
-%          ax.XLim = [10 20000];
+% Fs = 48000;
+% y = puvodni_samply;
+% N = length(y);
+% f = (0:N-1)*(Fs/N);
+% fft_sample = abs(fft(puvodni_samply));% spektrum signálu
+% semilogx(f,fft_sample);
+%    ax = gca;
+%     
+%   ax.XLim = [25 20000];
+%   xticks([25 40 63 100 160 250 400 630 1000 1600 2500 4000 6300 10000 20000]);
+%          %xticklabels({'25','40','63','100','160','250','400'...
+%     %'630','1000','1600','2500','4000','6300','10000', '20000'});
+% ylabel('Amplituda');
+% xlabel('Frekvence[Hz]');
+% title ('Spektrum signálu')
 end

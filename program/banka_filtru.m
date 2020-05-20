@@ -19,12 +19,15 @@ o = 3;                      % poèet filtrù na oktávu
 rad = 2;                    % øád filtru
 type = 'bandpass';          % typ filtru
 i = 1;                      % iterace
+
 %filtrovane_samply = zeros(200000,29);
 while fh < Fs/2
     
     %% výpoèet parametrù filtrù
-    fs = 2^(1/o)*fs;        % výpoèet støedních kmitoètù
-    fs_v = [fs_v fs];       % vektor støedních kmitoètù
+    if i >= 2;
+        fs = 2^(1/o)*fs;        % výpoèet støedních kmitoètù
+        fs_v = [fs_v fs];       % vektor støedních kmitoètù
+    end
     fd = fs / (2^(1/6));    % výpoèet dolního mezního kmitoètu         
     fh = fs * (2^(1/6));    % výpoèet horního mezního kmitoètu
     
