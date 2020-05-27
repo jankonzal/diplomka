@@ -1,38 +1,14 @@
 function [segmentID] = tr_detektor(okno,GrafOn,delta)
-%{
- Tato funkce je detektor transientù, slouží k hledání zaèátkù a koncù úderù.
- 
- Vstupními  parametry jsou úsek zvukového signálu, požadavek na grafické
- zobrazení 1/0, a posun o který má být k ukazateli úderu pøipsán,
- respektive èas zaèátku okna. Poukd není èas zaèátku okna zadán je poèítáno
- od nuly.
-
- Výstupním parametrem jous ukazatele zaèátkù a koncù úderù.
-%}
-
-% clc;
-% clear all;
-% close all;
-% % naètení souboru
-% %cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
-% %cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
-% %cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
-% %cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
-% %cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
-% %cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
-% if exist('cesta')
-%     [sample, fs] = audioread(cesta);
-%     info = audioinfo(cesta);
-% end
-% if ~exist('sample') || isempty(sample)                                     % pokud neexistuje sammpl otevøe se dialog pro naèteni zvukoveho souboru 
-%                                             
-%     [filename, pathname] = uigetfile({'*.wav','Zvukové soubory wav';'*.*',...
-%         'Všechny soubory'},'Vyber zvukový soubor');
-%     [sample, fs] = audioread( fullfile( pathname, filename));
-%             info = audioinfo(fullfile( pathname, filename));
-%     
-% end
-% okno = sample(:,1);                                                       % zmonìní samplu
+% 
+%  Tato funkce je detektor transientù, slouží k hledání zaèátkù a koncù úderù.
+%  
+%  Vstupními  parametry jsou úsek zvukového signálu, požadavek na grafické
+%  zobrazení 1/0, a posun o který má být k ukazateli úderu pøipsán,
+%  respektive èas zaèátku okna. Poukd není èas zaèátku okna zadán je poèítáno
+%  od nuly.
+% 
+%  Výstupním parametrem jous ukazatele zaèátkù a koncù úderù.
+% 
 
 %% Definice promìnných
 prah = 0.03;                                                               % rozhodovací úroveò
@@ -54,13 +30,13 @@ for i = 1:length(okno)
     DifFilter(i) = okno(i)-okno(i-1);
     end
 end
-%DifFilter = DifFilter.*DifFilter;
+%DifFilter = DifFilter.*DifFilter;                                          %kvadrát diferenèního filtru
 %% Obálka
 [up] = envelope(DifFilter, 900,'rms');
 
 %% segmentace pøíznakù
 for i = 1: length(okno)
-    if ochrana < 1                                                                        % ochranný interval pøi zápisu
+    if ochrana < 1                                                          % ochranný interval pøi zápisu
         if up(i) > prah                                                     % nad prahem
             stop = 1;
             if start == 1

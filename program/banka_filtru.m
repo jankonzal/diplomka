@@ -1,14 +1,14 @@
 function [filtrovane_samply,stredni_f] = banka_filtru(sample)
-%{
-Funkce banky filtrù pro rozdìlení na jednotlivá frekvenèní pásma.
-Vstupem je sampl a vzorkovací kmitoèet.
-Výstupem jsou vyfyltrovaný sampl a vektor støedních kmitoètù.
-Banka je založena na zlomko oktávových filtrech. Pomocí promìnné o je možné
-nastavit poèet filtrù na oktávu. Pomocí promìnné rad se nastavuje øád
-filtrù.
-Pro zobrazení prùbìhù banky filtrù, nebo pro pøehrání filtrovaného samplu
-je možné odkomentovat daný úsek kódu.
-%}
+% 
+% Funkce banky filtrù pro rozdìlení na jednotlivá frekvenèní pásma.
+% Vstupem je sampl a vzorkovací kmitoèet.
+% Výstupem jsou vyfyltrovaný sampl a vektor støedních kmitoètù.
+% Banka je založena na zlomko oktávových filtrech. Pomocí promìnné o je možné
+% nastavit poèet filtrù na oktávu. Pomocí promìnné rad se nastavuje øád
+% filtrù.
+% Pro zobrazení prùbìhù banky filtrù, nebo pro pøehrání filtrovaného samplu
+% je možné odkomentovat daný úsek kódu.
+% 
 
 %% definice promennych
 Fs = 48000;

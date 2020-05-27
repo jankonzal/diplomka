@@ -1,10 +1,10 @@
 function [pcaTransformed] = data2pca(new_data, mu, coeff, pocty);
-%{
-Funkce pøevádí testovací nahrávky do prostoru PCA daného trénovacím
-modelem.
-Vstupem jsou nová data, koeficienty.
-Výstupem jsou datav v prostoru PCA.
-%}
+
+% Funkce pøevádí testovací nahrávky do prostoru PCA daného trénovacím
+% modelem.
+% Vstupem jsou nová data a koeficienty vytrénovaného PCA prostoru.
+% Výstupem jsou datav v prostoru PCA.
+
 
 %% transformace
 pcaTransformed = bsxfun(@minus, new_data, mu) * coeff;

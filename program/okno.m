@@ -1,39 +1,13 @@
 function [WindowID,WinNum,SegmentID,q] = okno(sample, fs, WinLen, overlap, SegmentOFF)
-%{
-    Tato funkce rozdìlí signál do èasovýc oken a hledá zaèátky a konce úderù.
-    Vstupními parametry jsou zvukový signál, vzorkovací kmitoèet, velikost
-    okna (doporuèeno 3500 samplù) a pøesah (doporuèen 2/3).
-
-    Výstupními parametry jsou Identifikároty zaèátkù a koncù oken,
-    identifikátory zaèátkù, koncù úderù a poèet oken.
-%}
-
-% %cistka
-%   clc;
-%   clear all;
-%   close all;
+%
+%     Tato funkce rozdìlí signál do èasovýc oken a hledá zaèátky a konce úderù.
+%     Vstupními parametry jsou zvukový signál, vzorkovací kmitoèet, délka
+%     okna (doporuèeno 3500 samplù) a pøesah (doporuèen 2/3).
 % 
-% 
-% %% naètení souboru
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
-%  cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
-% % cesta = 'C:\Users\Honza\Documents\samply\sn\on\Snr-01 48.wav';
-% if exist('cesta')
-%     [sample, fs] = audioread(cesta);
-%     info = audioinfo(cesta);
-% end
-% if ~exist('sample') || isempty(sample)                                     % pokud neexistuje sammpl otevøe se dialog pro naèteni zvukoveho souboru 
-%                                             
-%     [filename, pathname] = uigetfile({'*.wav','Zvukové soubory wav';'*.*',...
-%         'Všechny soubory'},'Vyber zvukový soubor');
-%     [sample, fs] = audioread( fullfile( pathname, filename));
-%             info = audioinfo(fullfile( pathname, filename));
-%     
-% end
-% sample = sample(:,1);                                                       % zmonìní samplu
+%     Výstupními parametry jsou Identifikároty zaèátkù a koncù oken,
+%     identifikátory zaèátkù a koncù úderù a poèet oken.
+%
+
 %% definice promìnných
 WindowID = 1;                                                               % èasové znaèky oken
 PriznakySum = [0 0];                                                        % pøíznaky zaèátkù a koncù úderù
@@ -63,10 +37,6 @@ else                                                                        % po
     end
 end
 
-dRE = expander(-60);                                                        % expander
-%sample = dRE(sample);
-dRL = limiter(-1);                                                          % limiter
-sample = dRL(sample);
 %% segmentace plovoucím oknem
 for i=1:WinLen*WinMinus:length(sample)
     WindowID (WinNum,1) = i;    
@@ -81,7 +51,7 @@ for i=1:WinLen*WinMinus:length(sample)
     WinNum=WinNum+1;                                                        %poèet oken 
 end
 
-WinNum=WinNum-1;
+WinNum = WinNum-1;
 WindowID (WinNum,2) = length(sample);
 %% ovìøení zaèátku - pokud je na zaèátku nahrávky signál silnìjší než prahová úroveò
 clear i;
