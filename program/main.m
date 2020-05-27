@@ -1,11 +1,11 @@
-%{
-Tento soubor je testovací m-file. Analyzuje naètené audio soubory a
-rozpoznává v nich údery.
-
-K rozpoznání je tøeba pøipojit vytrénované modely analýzy hlavních
-komponent a metody podpùrných vektorù(PCAModel.mat a SVMModel.mat)
+% 
+% Tento soubor je testovací m-file. Analyzuje naètené audio soubory a
+% rozpoznává v nich údery.
+% 
+% K rozpoznání je tøeba pøipojit vytrénované modely analýzy hlavních
+% komponent a metody podpùrných vektorù(PCAModel.mat a SVMModel.mat)
  
-%}
+
 
 %% cistka
 clc;
@@ -22,16 +22,11 @@ load('SVMModel.mat');
 load('PCAModel.mat');
 %% automatické naètení souboru
 fprintf('Naèítání souborù...\n');
-% cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
-% cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
-% cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
- cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
-% cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
-% cesta = 'C:\Users\Honza\Documents\samply\01.wav';
+
 if exist('cesta')                                                          % Existujeli cesta naète soubor
     [sample, fs] = audioread(cesta);
     info = audioinfo(cesta);
-    filename = '08.wav';
+    
 end
 
 %% ruèní procházení 
@@ -131,8 +126,8 @@ Tab1.Title = 'Pravdìpodobnost pøíslušnosti';
         ax.Box = 'on';
         ax.YLim = [-1.1 1];
         plot(ax,sample);
-        xlabel(ax,'t');
-        ylabel(ax,'s (t)');
+        xlabel(ax,'vzorek [n]');
+        ylabel(ax,'relativní amplituda [aj]');
         clear i;
         c = 0;
         for i = 1:pocet_segmentu
@@ -189,8 +184,8 @@ Tab2.Title = 'Výbìr podle nejèastìjšího výskytu';
         ay.Box = 'on';
         ay.YLim = [-1.1 1];
         plot(ay,sample);
-        xlabel(ay,'t');
-        ylabel(ay,'s (t)');
+        xlabel(ax,'vzorek [n]');
+        ylabel(ax,'relativní amplituda [aj]');
         clear i;
         c = 0;
         for i = 1:pocet_segmentu

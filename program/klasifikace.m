@@ -1,4 +1,8 @@
-function [Mdl] = klasifikace(score,info);
+ function [Mdl] = klasifikace(score,info);
+% Funkce slouží k vytrénování klasifikaèního modelu.
+% Vstupem jsou score z PCA a informace o testovací sadì.
+
+%% pøedání promìnných
 info = table2array(info);
 X = score;
 %% oznaèení tøíd trénovací sady

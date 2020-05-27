@@ -1,71 +1,57 @@
 function [trenovaci] = nacteni_souboru();
-          
-          
-%% èistka
-% clc
-% clear all;
-% close all;
+% Funkce slouží k naètení souborù trénovací sady. Volá funkce pro filtraci
+% bankou filtrù a výpoèet energií ve frekvenèních pásmech.
+% Matlab vyzve k výbìru složek s jednotlivými samply.
+
 
 %% definice promìnných
-path = ('C:\Users\Honza\Documents\samply');                           % definice cest pro rychle najití složek (doèasné)
-path_sn = ('C:\Users\Honza\Documents\samply\sn\on');
-path_hi = ('C:\Users\Honza\Documents\samply\hi-hat\close');
-path_kick = ('C:\Users\Honza\Documents\samply\kick');
-path_ftom = ('C:\Users\Honza\Documents\samply\ftom');
-path_crash = ('C:\Users\Honza\Documents\samply\oh\crash');
-path_ride = ('C:\Users\Honza\Documents\samply\oh\ride');
-
-path_SnHh = ('C:\Users\Honza\Documents\samply\snhh');
-path_KickHh = ('C:\Users\Honza\Documents\samply\kickhh');
-%path_trash = ('D:\Disk Google\FEKT\Diplomka2\samply\oh\trash');
-%path_tom1 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom1');
-%path_tom2 = ('D:\Disk Google\FEKT\Diplomka2\samply\tom2');
+path = ('C:\');                           
 
 SUM_E = [];                                        
-f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù SN');            % waitbar
+
 
 %% výbìr složek
 if ~exist('path_sn')
-folder_sn = uigetdir(path,'Snare');                                        % naètení složky pro Snare
+path_sn = uigetdir(path,'Snare');                                        % naètení složky pro Snare
 end
 
 if ~exist('path_hi')
-folder_sn = uigetdir(path,'Hi-Hat');                                       % naètení složky pro Hi-Hat
+path_hi = uigetdir(path,'Hi-Hat');                                       % naètení složky pro Hi-Hat
 end
 
 if ~exist('path_kick')
-folder_sn = uigetdir(path,'Kick');                                         % naètení složky pro Kick
+path_kick = uigetdir(path,'Kick');                                         % naètení složky pro Kick
 end
 
-if ~exist('path_ftom')
-folder_ftom = uigetdir(path,'Floor tom');                                  % naètení složky pro Floor Tom
-end
+% if ~exist('path_ftom')
+% path_ftom = uigetdir(path,'Floor tom');                                  % naètení složky pro Floor Tom
+% end
 
 if ~exist('path_crash')
-folder_crash = uigetdir(path,'Crash');                                     % naètení složky pro Crash
+path_crash = uigetdir(path,'Crash');                                     % naètení složky pro Crash
 end
 
 if ~exist('path_ride')
-folder_ride = uigetdir(path,'Ride');                                       % naètení složky pro Ride
+path_ride = uigetdir(path,'Ride');                                       % naètení složky pro Ride
 end
 
 if ~exist('path_SnHh')
-folder_SnHh = uigetdir(path,'SnHh');                                       % naètení složky pro Ride
+path_SnHh = uigetdir(path,'Snare + Hi-Hat');                                       % naètení složky pro Ride
 end
 
 if ~exist('path_KickHh')
-folder_KickHh = uigetdir(path,'KickHh');                                       % naètení složky pro Ride
+path_KickHh = uigetdir(path,'Kick + Hi-Hat');                                       % naètení složky pro Ride
 end
 % if ~exist('path_trash')
-% folder_trash = uigetdir(path,'Trash');                                   % naètení složky pro Trash
+% path_trash = uigetdir(path,'Trash');                                   % naètení složky pro Trash
 % end
 % 
 % if ~exist('path_tom1')
-% folder_tom1 = uigetdir(path,'Tom 1');                                    % naètení složky pro Tom 1
+% path_tom1 = uigetdir(path,'Tom 1');                                    % naètení složky pro Tom 1
 % end
 % 
 % if ~exist('path_tom2')
-% folder_tom2 = uigetdir(path,'Tom 2');                                    % naètení složky pro Tom 2
+% path_tom2 = uigetdir(path,'Tom 2');                                    % naètení složky pro Tom 2
 % end
 
 
@@ -75,7 +61,7 @@ folder_sn = dir (path_sn);
 folder_kick = dir (path_kick);
 folder_hi = dir (path_hi);
 
-folder_ftom = dir (path_ftom);
+% folder_ftom = dir (path_ftom);
 folder_crash = dir (path_crash);
 folder_ride = dir (path_ride);
 
@@ -86,7 +72,7 @@ folder_KickHh = dir (path_KickHh);
 % folder_tom2 = dir (path_tom2);
 
 %% naètení souborù
-   
+f = waitbar(0,'Naèítání samplù', 'Name', 'Naèítání samplù SN');            % waitbar   
 % SNARE
 for i = 1:length(folder_sn)-2                                              % naèítání samplù pro Snare
     name = char({folder_sn(i+2).name});                                    % procházení jmen souborù ve složce

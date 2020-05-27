@@ -1,15 +1,12 @@
-%{
-Tento soubor je uèící se m-file. Naèítá trénovací data provádí jejich
-filtraci, vypoèet energií v pásmech, analýzu hlavních komponet, a shlukovou
-analýzu.
-
-Výpoèty se ukládají do struktury trenovaci, tato struktura je uložena jako
-soubor trenovaci.mat, aby nemuseli být všechny samply pro každý test
-naèítány a pøepoèítávány. Není- li tato struktura nalezena, je potøeba
-ruènì vybrat složky  se samply.
-
-
-%}
+% Tento soubor je uèící se m-file. Naèítá trénovací data provádí jejich
+% filtraci, vypoèet energií v pásmech, analýzu hlavních komponet, a trénuje
+% klasifikaèní model.
+% 
+% Výpoèty se ukládají do struktury trenovaci, tato struktura je uložena jako
+% soubor trenovaci.mat, aby nemusely být všechny samply pro každý test
+% naèítány a pøepoèítávány. Není- li tato struktura nalezena, je potøeba
+% ruènì vybrat složky  se samply.
+%Výstupem jsou modely PCAModel.mat a SVMModela.mat
 
 
 
@@ -24,7 +21,7 @@ close all;
 %% definice promìnných
 fprintf('Naèítání trénovacích dat...\n');
 
-load('trenovaci.mat');                                                     % naètení trénovací struktury
+%load('trenovaci.mat');                                                     % naètení trénovací struktury
 
 %% naètení samplù
 if ~exist('trenovaci') || isempty(trenovaci)                               % pokud neexistuje testovací struktura
@@ -43,7 +40,7 @@ fprintf('Ukládání modelù...\n');
 [SVMModel]=klasifikace(score, trenovaci.info);
 PCAModel = struct('PCAmu', mu, 'PCAcoeff', coeff);
 
-
+% uložení modelù
 save SVMModel SVMModel
 save PCAModel PCAModel
 %save trenovaci trenovaci
