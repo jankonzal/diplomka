@@ -25,7 +25,7 @@ fprintf('Naèítání souborù...\n');
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_long_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\all_drums_short_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_long_mono.wav';
-% cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
+ cesta = 'C:\Users\Honza\Documents\samply\downmix\kick_sn_hihat_short_mono.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\downmix\08.wav';
 % cesta = 'C:\Users\Honza\Documents\samply\01.wav';
 if exist('cesta')                                                          % Existujeli cesta naète soubor
